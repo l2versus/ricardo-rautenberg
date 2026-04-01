@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Property {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String
+  price       Float?
+  priceOnRequest Boolean @default(false)
+  status      String   @default("available") // available, sold, rented, negotiating
+  type        String   // apartment, penthouse, house, commercial, land
+  purpose     String   @default("sale") // sale, rent
+
+  // Location
+  neighborhood String
+  address      String?
+  city         String  @default("São Paulo")
+  state        String  @default("SP")
+  zipCode      String?
+
+  // Features
+  area         Float?
+  usableArea   Float?
+  bedrooms     Int?
+  suites       Int?
+  bathrooms    Int?
+  parkingSpots Int?
+  floors       Int?
+
+  // Amenities (comma-separated)
+  amenities    String?
+
+  // Media
+  images       PropertyImage[]
+  videoUrl     String?
+
+  // Off-market
+  isOffMarket  Boolean @default(false)
+
+  // Highlight
+  isFeatured   Boolean @default(false)
+
+  // SEO
+  metaTitle       String?
+  metaDescription String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PropertyImage {
+  id         String   @id @default(cuid())
+  url        String
+  alt        String?
+  order      Int      @default(0)
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@index([propertyId])
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+}
+
+model SiteConfig {
+  id          String @id @default("main")
+  phone       String @default("+5511999999999")
+  whatsapp    String @default("+5511999999999")
+  instagram   String @default("ricardo_rautenberg")
+  email       String @default("contato@ricardorautenberg.com.br")
+  aboutText   String @default("")
+  heroTitle   String @default("Imóveis de Alto Padrão em São Paulo")
+  heroSubtitle String @default("Experiência exclusiva em imóveis de luxo nos melhores bairros da capital paulista")
+}
