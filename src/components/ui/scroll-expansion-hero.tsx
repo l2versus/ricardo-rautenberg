@@ -23,6 +23,13 @@ interface ScrollExpandMediaProps {
   children?: ReactNode;
 }
 
+function resolveVideoSrc(src: string): string {
+  if (src.startsWith("/images/") && src.endsWith(".mp4")) {
+    return `/api/video/${src.replace("/images/", "")}`;
+  }
+  return src;
+}
+
 const ScrollExpandMedia = ({
   mediaType = 'video',
   mediaSrc,
@@ -226,7 +233,7 @@ const ScrollExpandMedia = ({
                   <div className='relative w-full h-full pointer-events-none'>
                     <video
                       ref={videoRef}
-                      src={mediaSrc}
+                      src={resolveVideoSrc(mediaSrc)}
                       poster={posterSrc}
                       autoPlay
                       muted

@@ -8,6 +8,14 @@ interface AutoplayVideoProps {
   className?: string;
 }
 
+function resolveVideoSrc(src: string): string {
+  if (src.startsWith("/images/") && src.endsWith(".mp4")) {
+    const name = src.replace("/images/", "");
+    return `/api/video/${name}`;
+  }
+  return src;
+}
+
 export function AutoplayVideo({ src, poster, className }: AutoplayVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -49,7 +57,7 @@ export function AutoplayVideo({ src, poster, className }: AutoplayVideoProps) {
       preload="auto"
       className={className}
     >
-      <source src={src} type="video/mp4" />
+      <source src={resolveVideoSrc(src)} type="video/mp4" />
     </video>
   );
 }
