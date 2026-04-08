@@ -3,6 +3,7 @@ node_modules
 .git
 .env
 .env.local
+dev.db
 prisma/dev.db
 public/uploads/*
 !public/uploads/.gitkeep
