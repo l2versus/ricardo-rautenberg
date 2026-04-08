@@ -184,7 +184,7 @@ const ScrollExpandMedia = ({
 
   const mediaWidth = 300 + scrollProgress * (isMobileState ? 650 : 1250);
   const mediaHeight = 400 + scrollProgress * (isMobileState ? 200 : 400);
-  const textTranslateX = scrollProgress * (isMobileState ? 180 : 150);
+  const textTranslateX = scrollProgress * (isMobileState ? 50 : 150);
 
   const firstWord = title ? title.split(' ')[0] : '';
   const restOfTitle = title ? title.split(' ').slice(1).join(' ') : '';
@@ -194,7 +194,7 @@ const ScrollExpandMedia = ({
       ref={sectionRef}
       className='transition-colors duration-700 ease-in-out overflow-x-hidden'
     >
-      <section className='relative flex flex-col items-center justify-start min-h-[100dvh]'>
+      <section className='relative flex flex-col items-center justify-start min-h-[100dvh] overflow-hidden'>
         <div className='relative w-full flex flex-col items-center min-h-[100dvh]'>
           <motion.div
             className='absolute inset-0 z-0 h-full'
@@ -224,7 +224,7 @@ const ScrollExpandMedia = ({
                 style={{
                   width: `${mediaWidth}px`,
                   height: `${mediaHeight}px`,
-                  maxWidth: '95vw',
+                  maxWidth: 'calc(100% - 32px)',
                   maxHeight: '85vh',
                   boxShadow: '0px 0px 50px rgba(0, 0, 0, 0.3)',
                 }}
@@ -280,7 +280,7 @@ const ScrollExpandMedia = ({
                   {date && (
                     <p
                       className='text-2xl text-gold/80 font-body'
-                      style={{ transform: `translateX(-${textTranslateX}vw)` }}
+                      style={{ transform: `translateX(-${textTranslateX}%)` }}
                     >
                       {date}
                     </p>
@@ -288,7 +288,7 @@ const ScrollExpandMedia = ({
                   {scrollToExpand && (
                     <p
                       className='text-gold/60 font-medium text-center text-sm tracking-[0.2em] uppercase font-body'
-                      style={{ transform: `translateX(${textTranslateX}vw)` }}
+                      style={{ transform: `translateX(${textTranslateX}%)` }}
                     >
                       {scrollToExpand}
                     </p>
@@ -303,13 +303,13 @@ const ScrollExpandMedia = ({
               >
                 <motion.h2
                   className='text-4xl md:text-5xl lg:text-6xl font-bold text-white font-display transition-none'
-                  style={{ transform: `translateX(-${textTranslateX}vw)` }}
+                  style={{ transform: `translateX(-${textTranslateX}%)` }}
                 >
                   {firstWord}
                 </motion.h2>
                 <motion.h2
                   className='text-4xl md:text-5xl lg:text-6xl font-bold text-center text-gradient-gold font-display transition-none'
-                  style={{ transform: `translateX(${textTranslateX}vw)` }}
+                  style={{ transform: `translateX(${textTranslateX}%)` }}
                 >
                   {restOfTitle}
                 </motion.h2>

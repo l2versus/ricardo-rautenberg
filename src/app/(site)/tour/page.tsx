@@ -31,10 +31,10 @@ export default function TourPage() {
             <p className="text-gold/70 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-body">
               Tour Virtual
             </p>
-            <h2 className="text-3xl sm:text-4xl font-bold font-display text-white mb-4">
+            <h2 className="text-2xl sm:text-4xl font-bold font-display text-white mb-4">
               Conheça Nossos Imóveis
             </h2>
-            <p className="text-muted-foreground font-body text-[15px] max-w-lg mx-auto">
+            <p className="text-muted-foreground font-body text-[14px] sm:text-[15px] max-w-lg mx-auto px-4">
               Cada propriedade é pessoalmente selecionada para garantir
               os mais altos padrões de qualidade, localização e acabamento.
             </p>
