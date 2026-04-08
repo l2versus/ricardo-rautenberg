@@ -31,14 +31,16 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Copy public assets
-COPY --from=builder /app/public ./public
-
-# Copy standalone build
+# 1. Copy standalone build FIRST
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+
+# 2. Copy static files
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Copy Prisma files
+# 3. Copy ALL public assets AFTER standalone (overwrites any partial public from standalone)
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+
+# 4. Copy Prisma files
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 COPY --from=builder /app/src/generated ./src/generated
