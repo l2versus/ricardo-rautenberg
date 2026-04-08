@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Phone, MapPin, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AutoplayVideo } from "@/components/autoplay-video";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -55,16 +56,11 @@ export default async function HomePage() {
     <>
       {/* ═══════ HERO — VIDEO FULLSCREEN ═══════ */}
       <section className="relative h-[100dvh] flex items-end overflow-hidden">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
+        <AutoplayVideo
+          src="/images/hero-video.mp4"
           poster="/images/hero.jpg"
           className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src="/images/hero-video.mp4" type="video/mp4" />
-        </video>
+        />
         <div className="absolute inset-0 hero-video-overlay z-10" />
         <div className="absolute inset-0 noise z-10 pointer-events-none" />
 

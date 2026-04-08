@@ -41,6 +41,7 @@ const ScrollExpandMedia = ({
   const [isMobileState, setIsMobileState] = useState<boolean>(false);
 
   const sectionRef = useRef<HTMLDivElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     setScrollProgress(0);
@@ -160,6 +161,20 @@ const ScrollExpandMedia = ({
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
 
+  // Force autoplay on mobile
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || mediaType !== 'video') return;
+
+    video.muted = true;
+    const tryPlay = () => { video.play().catch(() => {}); };
+    tryPlay();
+    video.addEventListener('loadeddata', tryPlay);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) tryPlay(); });
+
+    return () => { video.removeEventListener('loadeddata', tryPlay); };
+  }, [mediaType]);
+
   const mediaWidth = 300 + scrollProgress * (isMobileState ? 650 : 1250);
   const mediaHeight = 400 + scrollProgress * (isMobileState ? 200 : 400);
   const textTranslateX = scrollProgress * (isMobileState ? 180 : 150);
@@ -210,6 +225,7 @@ const ScrollExpandMedia = ({
                 {mediaType === 'video' ? (
                   <div className='relative w-full h-full pointer-events-none'>
                     <video
+                      ref={videoRef}
                       src={mediaSrc}
                       poster={posterSrc}
                       autoPlay
