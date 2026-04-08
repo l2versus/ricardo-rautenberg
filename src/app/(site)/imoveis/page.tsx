@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { PropertyCard } from "@/components/property-card";
 import { NEIGHBORHOODS, PROPERTY_TYPES } from "@/lib/utils";
 import { Search } from "lucide-react";
+
+export const dynamic = "force-dynamic";
 import { PropertyFilters } from "./filters";
 
 interface Props {

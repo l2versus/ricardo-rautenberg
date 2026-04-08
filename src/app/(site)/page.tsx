@@ -3,6 +3,8 @@ import Link from "next/link";
 import { ArrowRight, Phone, MapPin, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
+
+export const dynamic = "force-dynamic";
 import { NEIGHBORHOODS } from "@/lib/utils";
 import { PropertyCard } from "@/components/property-card";
 import {

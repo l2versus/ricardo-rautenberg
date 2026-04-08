@@ -432,6 +432,7 @@ export type PropertyImageCreateOrConnectWithoutPropertyInput = {
 
 export type PropertyImageCreateManyPropertyInputEnvelope = {
   data: Prisma.PropertyImageCreateManyPropertyInput | Prisma.PropertyImageCreateManyPropertyInput[]
+  skipDuplicates?: boolean
 }
 
 export type PropertyImageUpsertWithWhereUniqueWithoutPropertyInput = {
@@ -1211,6 +1212,7 @@ export type PropertyImageCreateManyArgs<ExtArgs extends runtime.Types.Extensions
    * The data used to create many PropertyImages.
    */
   data: Prisma.PropertyImageCreateManyInput | Prisma.PropertyImageCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1229,6 +1231,7 @@ export type PropertyImageCreateManyAndReturnArgs<ExtArgs extends runtime.Types.E
    * The data used to create many PropertyImages.
    */
   data: Prisma.PropertyImageCreateManyInput | Prisma.PropertyImageCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

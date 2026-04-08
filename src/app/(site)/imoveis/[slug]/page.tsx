@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
+
+export const dynamic = "force-dynamic";
 import { formatPrice, formatArea, getWhatsAppLink } from "@/lib/utils";
 import { PropertyGallery } from "./gallery";
 import {
