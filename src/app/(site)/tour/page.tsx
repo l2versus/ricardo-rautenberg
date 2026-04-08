@@ -13,7 +13,7 @@ export default function TourPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <ScrollExpandMedia
         mediaType="video"
         mediaSrc="/images/tour-video.mp4"
