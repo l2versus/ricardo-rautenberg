@@ -2,8 +2,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 
-const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET) throw new Error("JWT_SECRET environment variable is required");
+const JWT_SECRET = process.env.JWT_SECRET as string;
 
 export async function hashPassword(password: string) {
   return bcrypt.hash(password, 12);
