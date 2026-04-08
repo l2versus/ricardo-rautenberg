@@ -7,4 +7,6 @@ dev.db
 .env.production
 public/uploads/
 !public/uploads/.gitkeep
-*.mp4
+public/images/tour-video.mp4
+public/images/admin-video.mp4
+public/images/dashboard-video.mp4
