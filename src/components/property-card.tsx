@@ -43,13 +43,11 @@ export function PropertyCard({ property }: PropertyCardProps) {
       {/* Image */}
       <div className="relative aspect-[16/10] overflow-hidden">
         {mainImage ? (
-          <Image
+          <img
             src={mainImage.url}
             alt={mainImage.alt || property.title}
-            fill
-            unoptimized
-            className="object-cover transition-transform duration-[1s] ease-out group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1s] ease-out group-hover:scale-105"
+            loading="lazy"
           />
         ) : (
           <div className="w-full h-full bg-secondary/30 flex items-center justify-center">

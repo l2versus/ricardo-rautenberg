@@ -369,13 +369,11 @@ export default function AdminImoveisPage() {
                 {/* Image */}
                 <div className="relative aspect-[16/10] bg-secondary/10 overflow-hidden">
                   {property.images[0] ? (
-                    <Image
+                    <img
                       src={property.images[0].url}
                       alt={property.title}
-                      fill
-                      unoptimized
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      loading="lazy"
                     />
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-card to-secondary/20">

@@ -29,14 +29,10 @@ export function PropertyGallery({ images, title }: GalleryProps) {
           className="md:col-span-2 md:row-span-2 relative aspect-[4/3] cursor-pointer img-zoom"
           onClick={() => setLightboxIndex(0)}
         >
-          <Image
+          <img
             src={images[0].url}
             alt={images[0].alt || title}
-            fill
-            unoptimized
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 50vw"
-            priority
+            className="absolute inset-0 w-full h-full object-cover"
           />
         </div>
 
@@ -47,13 +43,11 @@ export function PropertyGallery({ images, title }: GalleryProps) {
             className="relative aspect-[4/3] cursor-pointer img-zoom hidden md:block"
             onClick={() => setLightboxIndex(i + 1)}
           >
-            <Image
+            <img
               src={img.url}
               alt={img.alt || `${title} - Foto ${i + 2}`}
-              fill
-              unoptimized
-              className="object-cover"
-              sizes="25vw"
+              className="absolute inset-0 w-full h-full object-cover"
+              loading="lazy"
             />
             {i === 3 && images.length > 5 && (
               <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
@@ -109,13 +103,10 @@ export function PropertyGallery({ images, title }: GalleryProps) {
           </button>
 
           <div className="relative w-full max-w-5xl aspect-[16/10] mx-4">
-            <Image
+            <img
               src={images[lightboxIndex].url}
               alt={images[lightboxIndex].alt || `${title} - Foto ${lightboxIndex + 1}`}
-              fill
-              unoptimized
-              className="object-contain"
-              sizes="100vw"
+              className="absolute inset-0 w-full h-full object-contain"
             />
           </div>
 
