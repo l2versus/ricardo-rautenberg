@@ -18,7 +18,7 @@ const contacts = [
     icon: Phone,
     label: "WhatsApp",
     value: "(11) 99999-9999",
-    href: "https://wa.me/5511999999999",
+    href: "https://wa.me/5511939117173",
     external: true,
   },
   {
@@ -82,7 +82,7 @@ export function Footer() {
 
               {/* CTA WhatsApp */}
               <a
-                href="https://wa.me/5511999999999?text=Ola%20Ricardo,%20vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais."
+                href="https://wa.me/5511939117173?text=Ola%20Ricardo,%20vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group inline-flex items-center gap-2 px-5 py-2.5 bg-gold/5 border border-gold/15 hover:bg-gold/10 hover:border-gold/30 transition-all duration-500"

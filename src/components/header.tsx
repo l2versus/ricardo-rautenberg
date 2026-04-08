@@ -62,7 +62,7 @@ export function Header() {
                 className="ml-4 bg-gold/10 border border-gold/20 text-gold hover:bg-gold hover:text-background transition-all duration-400 text-[10px] tracking-[0.2em] uppercase font-body px-5 py-2 h-auto rounded-none"
               >
                 <a
-                  href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP?.replace(/\D/g, "") || "5511999999999"}`}
+                  href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP?.replace(/\D/g, "") || "5511939117173"}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -115,7 +115,7 @@ export function Header() {
               className="bg-gold text-background hover:bg-gold-light text-xs tracking-[0.15em] uppercase font-body px-8 py-5"
             >
               <a
-                href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP?.replace(/\D/g, "") || "5511999999999"}`}
+                href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP?.replace(/\D/g, "") || "5511939117173"}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setOpen(false)}

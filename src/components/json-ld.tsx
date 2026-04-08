@@ -71,7 +71,7 @@ export function AgentJsonLd() {
     description:
       "Corretor especializado em im\u00F3veis de alto padr\u00E3o em S\u00E3o Paulo. CRECI SP 299919.",
     url: "https://ricardorautenberg.com.br",
-    telephone: "+5511999999999",
+    telephone: "+5511939117173",
     address: {
       "@type": "PostalAddress",
       addressLocality: "S\u00E3o Paulo",

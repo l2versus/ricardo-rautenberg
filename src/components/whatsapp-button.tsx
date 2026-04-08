@@ -3,7 +3,7 @@
 import { MessageCircle } from "lucide-react";
 
 export function WhatsAppButton() {
-  const phone = process.env.NEXT_PUBLIC_WHATSAPP?.replace(/\D/g, "") || "5511999999999";
+  const phone = process.env.NEXT_PUBLIC_WHATSAPP?.replace(/\D/g, "") || "5511939117173";
 
   return (
     <a

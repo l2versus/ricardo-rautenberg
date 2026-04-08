@@ -85,7 +85,7 @@ export default async function HomePage() {
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="border-white/15 text-white/80 hover:bg-white/5 hover:border-white/30 text-sm px-8 py-6 tracking-[0.1em] uppercase font-body">
-                <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP?.replace(/\D/g, "") || "5511999999999"}`} target="_blank" rel="noopener noreferrer">
+                <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP?.replace(/\D/g, "") || "5511939117173"}`} target="_blank" rel="noopener noreferrer">
                   <Phone className="w-4 h-4 mr-2" /> WhatsApp
                 </a>
               </Button>
@@ -264,7 +264,7 @@ export default async function HomePage() {
                     <Link href="/sobre">Saiba mais</Link>
                   </Button>
                   <Button asChild variant="outline" className="border-gold/20 text-gold hover:bg-gold/5 text-xs tracking-[0.15em] uppercase font-body px-8 py-5">
-                    <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP?.replace(/\D/g, "") || "5511999999999"}`} target="_blank" rel="noopener noreferrer">
+                    <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP?.replace(/\D/g, "") || "5511939117173"}`} target="_blank" rel="noopener noreferrer">
                       Fale comigo
                     </a>
                   </Button>
@@ -326,7 +326,7 @@ export default async function HomePage() {
           <FadeUp delay={0.3}>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Button asChild size="lg" className="btn-luxury bg-gold text-background hover:bg-gold-light px-10 py-6 text-xs tracking-[0.15em] uppercase font-body">
-                <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP?.replace(/\D/g, "") || "5511999999999"}`} target="_blank" rel="noopener noreferrer">
+                <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP?.replace(/\D/g, "") || "5511939117173"}`} target="_blank" rel="noopener noreferrer">
                   <Phone className="w-4 h-4 mr-2" /> WhatsApp
                 </a>
               </Button>

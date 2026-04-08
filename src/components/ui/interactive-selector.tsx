@@ -103,28 +103,28 @@ export default function InteractiveSelector({
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center py-16 sm:py-24 font-body text-white">
+    <div className="relative flex flex-col items-center justify-center py-12 sm:py-24 font-body text-white overflow-hidden max-w-[100vw]">
       {/* Header */}
       <div className="w-full max-w-2xl px-6 mb-2 text-center">
         <p className="text-gold/70 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-body">
           Categorias
         </p>
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-white mb-3 tracking-tight">
+        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold font-display text-white mb-3 tracking-tight">
           {heading}
         </h2>
-        <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto">
+        <p className="text-sm sm:text-lg text-muted-foreground max-w-xl mx-auto px-2">
           {subheading}
         </p>
       </div>
 
-      <div className="h-10" />
+      <div className="h-6 sm:h-10" />
 
       {/* ═══ MOBILE: Swipeable Cards ═══ */}
       {isMobile ? (
-        <div className="w-full px-4">
+        <div className="w-full px-4 overflow-hidden">
           {/* Card */}
           <div
-            className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden"
+            className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden"
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >

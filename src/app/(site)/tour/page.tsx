@@ -59,7 +59,7 @@ export default function TourPage() {
                 className="btn-luxury bg-gold text-background hover:bg-gold-light text-xs tracking-[0.15em] uppercase font-body px-8 py-5"
               >
                 <a
-                  href="https://wa.me/5511999999999"
+                  href="https://wa.me/5511939117173"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

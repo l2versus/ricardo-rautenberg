@@ -82,7 +82,7 @@ export default async function PropertyPage({ params }: Props) {
 
   const whatsappMessage = `Ol\u00E1 Ricardo, tenho interesse no im\u00F3vel: ${property.title} (${property.neighborhood}). Podemos conversar?`;
   const whatsappLink = getWhatsAppLink(
-    process.env.NEXT_PUBLIC_WHATSAPP || "+5511999999999",
+    process.env.NEXT_PUBLIC_WHATSAPP || "+5511939117173",
     whatsappMessage
   );
 
@@ -260,7 +260,7 @@ export default async function PropertyPage({ params }: Props) {
                   variant="outline"
                   className="w-full border-gold/20 text-gold hover:bg-gold/5 py-5 text-sm font-body tracking-wider rounded-none"
                 >
-                  <a href="tel:+5511999999999">
+                  <a href="tel:+5511939117173">
                     <Phone className="w-4 h-4 mr-2" />
                     Ligar agora
                   </a>

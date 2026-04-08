@@ -30,7 +30,7 @@ export default function ContatoPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* WhatsApp */}
           <a
-            href="https://wa.me/5511999999999?text=Olá%20Ricardo,%20vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais%20sobre%20os%20imóveis."
+            href="https://wa.me/5511939117173?text=Olá%20Ricardo,%20vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais%20sobre%20os%20imóveis."
             target="_blank"
             rel="noopener noreferrer"
             className="group p-8 border border-border/40 bg-card/30 hover:border-[#25D366]/30 transition-all duration-500"
@@ -47,7 +47,7 @@ export default function ContatoPage() {
 
           {/* Phone */}
           <a
-            href="tel:+5511999999999"
+            href="tel:+5511939117173"
             className="group p-8 border border-border/40 bg-card/30 hover:border-gold/30 transition-all duration-500"
           >
             <div className="w-12 h-12 flex items-center justify-center bg-gold/5 mb-5 group-hover:bg-gold/10 transition-colors">
