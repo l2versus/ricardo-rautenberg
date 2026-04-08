@@ -25,7 +25,7 @@ export default function TourPage() {
         textBlend
       >
         {/* Content revealed after expansion */}
-        <div className="max-w-6xl mx-auto">
+        <div className="w-full max-w-6xl mx-auto">
           {/* Intro */}
           <div className="text-center mb-16">
             <p className="text-gold/70 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-body">
