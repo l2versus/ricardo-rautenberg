@@ -15,7 +15,7 @@ export function PropertyGallery({ images, title }: GalleryProps) {
   if (images.length === 0) {
     return (
       <div className="aspect-[21/9] bg-card rounded-lg flex items-center justify-center border border-border">
-        <p className="text-muted-foreground">Sem imagens dispon\u00EDveis</p>
+        <p className="text-muted-foreground">{"Sem imagens disponíveis"}</p>
       </div>
     );
   }

@@ -1,6 +1,9 @@
 node_modules/
 .next/
 prisma/dev.db
+dev.db
 .env
 .env.local
+.env.production
 public/uploads/
+!public/uploads/.gitkeep

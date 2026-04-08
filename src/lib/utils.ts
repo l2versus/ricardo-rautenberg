@@ -26,7 +26,7 @@ export function slugify(text: string): string {
 
 export function formatArea(area: number | null): string {
   if (!area) return "-";
-  return `${area.toLocaleString("pt-BR")} m\u00B2`;
+  return `${area.toLocaleString("pt-BR")} m²`;
 }
 
 export function getWhatsAppLink(phone: string, message?: string): string {
@@ -36,24 +36,22 @@ export function getWhatsAppLink(phone: string, message?: string): string {
 }
 
 export const NEIGHBORHOODS = [
-  "Itaim Bibi",
-  "Jardim Paulista",
-  "Jardim Am\u00E9rica",
-  "Jardim Europa",
-  "Vila Nova Concei\u00E7\u00E3o",
-  "Moema",
-  "Vila Ol\u00EDmpia",
-  "Pinheiros",
-  "Higien\u00F3polis",
-  "Brooklin",
-  "Campo Belo",
-  "Morumbi",
-  "Alto de Pinheiros",
-  "Vila Madalena",
-  "Perdizes",
-  "Consola\u00E7\u00E3o",
-  "Para\u00EDso",
-  "Aclima\u00E7\u00E3o",
+  "Jardim",
+  "Bairro Jardim",
+  "Centro",
+  "Vila Bastos",
+  "Campestre",
+  "Bairro Santa Paula",
+  "Vila Assunção",
+  "Barceloneta",
+  "Vila Gilda",
+  "Rudge Ramos",
+  "Nova Petrópolis",
+  "Olímpico",
+  "Santo André",
+  "São Bernardo do Campo",
+  "São Caetano do Sul",
+  "Diadema",
 ] as const;
 
 export const PROPERTY_TYPES = [
@@ -65,10 +63,10 @@ export const PROPERTY_TYPES = [
 ] as const;
 
 export const PROPERTY_STATUS = [
-  { value: "available", label: "Dispon\u00EDvel" },
+  { value: "available", label: "Disponível" },
   { value: "sold", label: "Vendido" },
   { value: "rented", label: "Alugado" },
-  { value: "negotiating", label: "Em Negocia\u00E7\u00E3o" },
+  { value: "negotiating", label: "Em Negociação" },
 ] as const;
 
 export const AMENITIES = [
@@ -79,17 +77,17 @@ export const AMENITIES = [
   "Churrasqueira Gourmet",
   "Rooftop",
   "Car Gallery",
-  "Automa\u00E7\u00E3o Residencial",
+  "Automação Residencial",
   "Home Cinema",
   "Adega Climatizada",
-  "Quadra de T\u00EAnis",
+  "Quadra de Tênis",
   "Playground",
-  "Sal\u00E3o de Festas",
+  "Salão de Festas",
   "Coworking",
   "Pet Place",
-  "Biciclet\u00E1rio",
+  "Bicicletário",
   "Heliponto",
-  "Vista Panor\u00E2mica",
+  "Vista Panorâmica",
   "Varanda Gourmet",
   "Lavabo",
 ] as const;

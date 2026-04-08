@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const session = await getSession();
   if (!session) {
-    return NextResponse.json({ error: "N\u00E3o autorizado" }, { status: 401 });
+    return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
   }
 
   const body = await req.json();
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
   const existing = await prisma.property.findUnique({ where: { slug } });
   if (existing) {
     return NextResponse.json(
-      { error: "J\u00E1 existe um im\u00F3vel com t\u00EDtulo similar" },
+      { error: "Já existe um imóvel com título similar" },
       { status: 400 }
     );
   }
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
       purpose: body.purpose || "sale",
       neighborhood: body.neighborhood || "",
       address: body.address || null,
-      city: body.city || "S\u00E3o Paulo",
+      city: body.city || "ABC Paulista",
       state: body.state || "SP",
       zipCode: body.zipCode || null,
       area: body.area ? parseFloat(body.area) : null,

@@ -3,11 +3,12 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { PropertyForm } from "../form";
+import { HeroGeometric } from "@/components/ui/shape-landing-hero";
 
 export default function EditarImovelPage() {
   const params = useParams();
   const router = useRouter();
-  const [property, setProperty] = useState(null);
+  const [property, setProperty] = useState<{ title?: string } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,12 +37,27 @@ export default function EditarImovelPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p className="text-muted-foreground">Carregando...</p>
+        <p className="text-muted-foreground font-body text-sm">Carregando...</p>
       </div>
     );
   }
 
   if (!property) return null;
 
-  return <PropertyForm initialData={property} />;
+  return (
+    <div>
+      <HeroGeometric
+        badge="Editando Imóvel"
+        title1="Editar"
+        title2={property.title?.split(" ").slice(0, 3).join(" ") || "Imóvel"}
+        description="Atualize as informações do imóvel abaixo."
+        showLogo={false}
+        compact
+        className="!min-h-[35vh]"
+      />
+      <div className="relative -mt-16 z-10">
+        <PropertyForm initialData={property as never} />
+      </div>
+    </div>
+  );
 }

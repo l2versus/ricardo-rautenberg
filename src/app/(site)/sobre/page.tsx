@@ -1,154 +1,167 @@
 import Image from "next/image";
-import { Award, Shield, Star, Users, MapPin, Instagram } from "lucide-react";
+import Link from "next/link";
+import { Award, Shield, Star, Users, MapPin } from "lucide-react";
+import { InstagramIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "Sobre Ricardo Rautenberg",
-  description: "Conhe\u00E7a Ricardo Rautenberg, corretor especializado em im\u00F3veis de alto padr\u00E3o em S\u00E3o Paulo. CRECI SP 299919. Atendimento exclusivo nos melhores bairros da capital.",
+  title: "Sobre",
+  description:
+    "Conheça Ricardo Rautenberg, corretor especializado em imóveis de alto padrão no ABC Paulista. CRECI SP 299919.",
 };
 
 export default function SobrePage() {
   return (
-    <div className="py-12 px-4">
-      <div className="max-w-7xl mx-auto">
-        {/* Hero */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
-          <div className="relative aspect-[3/4] max-w-lg mx-auto lg:mx-0 rounded-lg overflow-hidden">
-            <Image
-              src="/images/ricardo.jpg"
-              alt="Ricardo Rautenberg"
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+    <div className="pt-28 sm:pt-36 pb-20">
+      {/* Hero Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+          {/* Photo */}
+          <div className="lg:col-span-5">
+            <div className="relative aspect-[3/4] max-w-md mx-auto lg:mx-0 overflow-hidden">
+              <Image
+                src="/images/ricardo-dark.jpg"
+                alt="Ricardo Rautenberg - Corretor de Imóveis de Alto Padrão"
+                fill
+                className="object-cover object-top"
+                sizes="(max-width: 1024px) 80vw, 40vw"
+                priority
+              />
+              <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-gold via-gold/50 to-transparent" />
+            </div>
           </div>
 
-          <div>
-            <p className="text-gold text-sm tracking-[0.3em] uppercase mb-3 font-[family-name:var(--font-inter)]">
-              O Especialista
+          {/* Content */}
+          <div className="lg:col-span-7 lg:pt-8">
+            <p className="text-gold/70 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-body">
+              Sobre
             </p>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
-              Ricardo Rautenberg
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-8">
+              Ricardo<br />Rautenberg
             </h1>
-            <div className="w-16 h-[1px] bg-gold mb-6" />
 
-            <div className="space-y-4 text-muted-foreground leading-relaxed font-[family-name:var(--font-inter)]">
+            <div className="space-y-5 text-muted-foreground leading-relaxed font-body text-[15px] max-w-xl">
               <p>
-                Ricardo Rautenberg \u00E9 corretor de im\u00F3veis especializado no mercado
-                de alto padr\u00E3o de S\u00E3o Paulo, com profundo conhecimento dos bairros
-                mais nobres da capital paulista.
+                Com anos de experiência no mercado imobiliário de alto padrão
+                do ABC Paulista, Ricardo Rautenberg se destaca pela curadoria
+                rigorosa e atendimento personalizado que oferece a cada cliente.
               </p>
               <p>
-                Com uma abordagem baseada em curadoria rigorosa e atendimento
-                verdadeiramente personalizado, Ricardo se diferencia por entender que
-                cada cliente possui necessidades \u00FAnicas e merece uma experi\u00EAncia
-                \u00E0 altura do investimento.
+                Especializado em imóveis de alto padrão em Santo André,
+                São Bernardo do Campo, São Caetano do Sul e região &mdash; conecta
+                compradores exigentes às propriedades que definem o que há de
+                melhor em moradia de luxo.
               </p>
               <p>
-                Sua miss\u00E3o \u00E9 conectar pessoas exigentes \u00E0s propriedades que
-                definem o que h\u00E1 de melhor em moradia de luxo, com transpar\u00EAncia,
-                discri\u00E7\u00E3o e excel\u00EAncia em cada etapa da negocia\u00E7\u00E3o.
+                Seu compromisso é transformar a busca pelo imóvel ideal em uma
+                experiência fluida e exclusiva, com transparência total e
+                atenção a cada detalhe.
               </p>
             </div>
 
-            <div className="flex items-center gap-8 mt-8">
-              <div>
-                <p className="text-2xl font-bold text-gold">CRECI</p>
-                <p className="text-sm text-muted-foreground font-[family-name:var(--font-inter)]">SP - 299919</p>
-              </div>
-              <div className="w-[1px] h-12 bg-border" />
-              <div>
-                <p className="text-2xl font-bold text-gold">SP</p>
-                <p className="text-sm text-muted-foreground font-[family-name:var(--font-inter)]">S\u00E3o Paulo</p>
-              </div>
+            {/* Social */}
+            <div className="flex items-center gap-4 mt-8">
+              <a
+                href="https://instagram.com/ricardo_rautenberg"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-gold transition-colors font-body"
+              >
+                <InstagramIcon className="w-4 h-4" />
+                @ricardo_rautenberg
+              </a>
             </div>
 
-            <div className="flex gap-3 mt-8">
-              <Button asChild className="bg-gold text-background hover:bg-gold-light">
-                <a
-                  href="https://wa.me/5511999999999"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Fale Comigo
-                </a>
-              </Button>
-              <Button asChild variant="outline" className="border-gold/30 text-gold">
-                <a
-                  href="https://instagram.com/ricardo_rautenberg"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Instagram className="w-4 h-4 mr-2" />
-                  Instagram
-                </a>
-              </Button>
+            {/* CRECI badge */}
+            <div className="inline-flex items-center gap-6 mt-8 px-6 py-4 border border-border/40 bg-card/50">
+              <div>
+                <p className="text-[10px] tracking-[0.3em] text-gold/60 uppercase font-body">CRECI SP</p>
+                <p className="text-2xl font-bold font-display text-gold">299919</p>
+              </div>
+              <div className="w-[1px] h-10 bg-border/40" />
+              <div>
+                <p className="text-[10px] tracking-[0.3em] text-muted-foreground/50 uppercase font-body">Região</p>
+                <p className="text-lg font-semibold font-display">ABC Paulista</p>
+              </div>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Values */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Differentials */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 mt-24 sm:mt-32">
+        <div className="divider-gold mb-16" />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {[
             {
               icon: Shield,
-              title: "Transpar\u00EAncia",
-              desc: "Informa\u00E7\u00F5es claras e honestas sobre cada propriedade e negocia\u00E7\u00E3o.",
+              title: "Atendimento Exclusivo",
+              desc: "Cada cliente recebe atenção personalizada e dedicação total.",
             },
             {
               icon: Star,
-              title: "Excel\u00EAncia",
-              desc: "Padr\u00E3o elevado em cada detalhe, da apresenta\u00E7\u00E3o ao fechamento.",
-            },
-            {
-              icon: Users,
-              title: "Discri\u00E7\u00E3o",
-              desc: "Sigilo absoluto para clientes que valorizam privacidade acima de tudo.",
+              title: "Curadoria de Elite",
+              desc: "Seleção rigorosa dos melhores imóveis do ABC Paulista.",
             },
             {
               icon: Award,
-              title: "Resultado",
-              desc: "Foco em encontrar a propriedade ideal dentro do prazo e das expectativas.",
+              title: "Expertise",
+              desc: "Conhecimento profundo dos bairros nobres e tendências.",
+            },
+            {
+              icon: Users,
+              title: "Rede de Contatos",
+              desc: "Acesso a oportunidades exclusivas antes do mercado.",
             },
           ].map((item) => (
-            <div
-              key={item.title}
-              className="p-6 bg-card rounded-lg border border-border hover:border-gold/20 transition-all"
-            >
-              <item.icon className="w-8 h-8 text-gold mb-4" />
-              <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
-              <p className="text-sm text-muted-foreground font-[family-name:var(--font-inter)]">
+            <div key={item.title} className="group">
+              <div className="w-10 h-10 flex items-center justify-center bg-gold/5 border border-gold/10 mb-4 group-hover:bg-gold/10 transition-colors">
+                <item.icon className="w-4.5 h-4.5 text-gold/70" />
+              </div>
+              <h3 className="text-sm font-semibold mb-2 font-display">{item.title}</h3>
+              <p className="text-[13px] text-muted-foreground/60 leading-relaxed font-body">
                 {item.desc}
               </p>
             </div>
           ))}
         </div>
+      </section>
 
-        {/* Areas of Operation */}
-        <div className="mt-24 text-center">
-          <p className="text-gold text-sm tracking-[0.3em] uppercase mb-3 font-[family-name:var(--font-inter)]">
-            \u00C1rea de atua\u00E7\u00E3o
-          </p>
-          <h2 className="text-3xl font-bold mb-8">Bairros Nobres de S\u00E3o Paulo</h2>
-          <div className="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
-            {[
-              "Itaim Bibi", "Jardim Paulista", "Jardim Am\u00E9rica", "Jardim Europa",
-              "Vila Nova Concei\u00E7\u00E3o", "Moema", "Vila Ol\u00EDmpia", "Pinheiros",
-              "Higien\u00F3polis", "Brooklin", "Campo Belo", "Morumbi",
-            ].map((b) => (
-              <span
-                key={b}
-                className="px-4 py-2 bg-card border border-border rounded-full text-sm text-muted-foreground font-[family-name:var(--font-inter)]"
+      {/* CTA */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 mt-24 sm:mt-32">
+        <div className="relative p-10 sm:p-16 text-center border border-border/40 bg-card/30 overflow-hidden noise">
+          <div className="relative z-10">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-4 font-display">
+              Vamos conversar?
+            </h2>
+            <p className="text-muted-foreground font-body text-[15px] mb-8 max-w-md mx-auto">
+              Entre em contato para uma consultoria personalizada sobre o mercado imobiliário de alto padrão.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Button
+                asChild
+                className="btn-luxury bg-gold text-background hover:bg-gold-light text-xs tracking-[0.15em] uppercase font-body px-8 py-5"
               >
-                <MapPin className="w-3 h-3 inline mr-1 text-gold/50" />
-                {b}
-              </span>
-            ))}
+                <a
+                  href="https://wa.me/5511999999999"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  WhatsApp
+                </a>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                className="border-gold/20 text-gold hover:bg-gold/5 text-xs tracking-[0.15em] uppercase font-body px-8 py-5"
+              >
+                <Link href="/contato">Contato</Link>
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

@@ -1,20 +1,35 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Building2, Shield, Star, Phone, MapPin, Award } from "lucide-react";
+import { ArrowRight, Phone, MapPin, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { PropertyCard } from "@/components/property-card";
 import { prisma } from "@/lib/prisma";
 import { NEIGHBORHOODS } from "@/lib/utils";
+import { PropertyCard } from "@/components/property-card";
+import {
+  FadeUp,
+  FadeIn,
+  SlideIn,
+  ScaleUp,
+  ParallaxImage,
+  ParallaxSection,
+  StaggerContainer,
+  StaggerItem,
+  TextReveal,
+  LineReveal,
+} from "@/components/scroll-animations";
+
+const SHOWCASE_IMAGES = [
+  { src: "/images/cap3.jpg", alt: "Sala de jantar gourmet com vista panorâmica" },
+  { src: "/images/cap2.jpg", alt: "Rooftop com piscina e vista panorâmica" },
+  { src: "/images/cap4.jpg", alt: "Living duplex com pé-direito duplo" },
+  { src: "/images/cap1.jpg", alt: "Cozinha planejada em mármore" },
+  { src: "/images/cap5.jpg", alt: "Espaço gourmet integrado" },
+];
 
 async function getFeaturedProperties() {
   return prisma.property.findMany({
-    where: {
-      isFeatured: true,
-      isOffMarket: false,
-    },
-    include: {
-      images: { orderBy: { order: "asc" }, take: 1 },
-    },
+    where: { isFeatured: true, isOffMarket: false },
+    include: { images: { orderBy: { order: "asc" }, take: 1 } },
     orderBy: { createdAt: "desc" },
     take: 6,
   });
@@ -23,9 +38,7 @@ async function getFeaturedProperties() {
 async function getRecentProperties() {
   return prisma.property.findMany({
     where: { isOffMarket: false },
-    include: {
-      images: { orderBy: { order: "asc" }, take: 1 },
-    },
+    include: { images: { orderBy: { order: "asc" }, take: 1 } },
     orderBy: { createdAt: "desc" },
     take: 6,
   });
@@ -38,275 +51,292 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* ===== HERO ===== */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-background z-10" />
-        <div className="absolute inset-0 bg-[url('/images/hero.jpg')] bg-cover bg-center bg-no-repeat" />
-        {/* Fallback if no hero image */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0A] via-[#141414] to-[#1A1A1A]" style={{ zIndex: 0 }} />
+      {/* ═══════ HERO — VIDEO FULLSCREEN ═══════ */}
+      <section className="relative h-[100dvh] flex items-end overflow-hidden">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/images/hero.jpg"
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/images/hero-video.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 hero-video-overlay z-10" />
+        <div className="absolute inset-0 noise z-10 pointer-events-none" />
 
-        <div className="relative z-20 text-center px-4 max-w-4xl mx-auto animate-fade-in-up">
-          {/* Gold line */}
-          <div className="w-16 h-[1px] bg-gold mx-auto mb-8" />
-
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white leading-tight tracking-tight">
-            Im&oacute;veis de{" "}
-            <span className="text-gradient-gold">Alto Padr&atilde;o</span>
-            <br />
-            em S&atilde;o Paulo
-          </h1>
-
-          <p className="mt-6 text-lg sm:text-xl text-white/70 max-w-2xl mx-auto font-[family-name:var(--font-inter)] font-light leading-relaxed">
-            Experi&ecirc;ncia exclusiva na curadoria dos melhores im&oacute;veis
-            de luxo nos bairros mais nobres da capital paulista.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
-            <Button
-              asChild
-              size="lg"
-              className="bg-gold text-background hover:bg-gold-light text-base px-8 py-6 tracking-wider"
-            >
-              <Link href="/imoveis">
-                Ver Im&oacute;veis
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="border-white/20 text-white hover:bg-white/10 text-base px-8 py-6 tracking-wider"
-            >
-              <a
-                href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP?.replace(/\D/g, "") || "5511999999999"}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Phone className="w-4 h-4 mr-2" />
-                Fale Comigo
-              </a>
-            </Button>
-          </div>
-
-          {/* CRECI */}
-          <p className="mt-8 text-xs text-white/40 tracking-[0.2em] uppercase font-[family-name:var(--font-inter)]">
-            CRECI SP &mdash; 299919
-          </p>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
-          <div className="w-[1px] h-16 bg-gradient-to-b from-gold/0 via-gold to-gold/0 animate-pulse" />
-        </div>
-      </section>
-
-      {/* ===== DIFERENCIAIS ===== */}
-      <section className="py-24 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-gold text-sm tracking-[0.3em] uppercase mb-3 font-[family-name:var(--font-inter)]">
-              Por que escolher
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-bold">Ricardo Rautenberg</h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Shield,
-                title: "Atendimento Exclusivo",
-                desc: "Cada cliente recebe aten\u00E7\u00E3o personalizada com dedica\u00E7\u00E3o total. Sem intermedi\u00E1rios, direto com o especialista.",
-              },
-              {
-                icon: Star,
-                title: "Curadoria de Elite",
-                desc: "Sele\u00E7\u00E3o rigorosa dos melhores im\u00F3veis de S\u00E3o Paulo. Cada propriedade \u00E9 pessoalmente vistoriada e aprovada.",
-              },
-              {
-                icon: Award,
-                title: "Expertise no Mercado",
-                desc: "Conhecimento profundo dos bairros nobres de SP, tend\u00EAncias de mercado e oportunidades exclusivas de investimento.",
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="text-center p-8 bg-card rounded-lg border border-border hover:border-gold/20 transition-all duration-500 group"
-              >
-                <div className="w-14 h-14 rounded-full bg-gold/10 flex items-center justify-center mx-auto mb-6 group-hover:bg-gold/20 transition-colors">
-                  <item.icon className="w-6 h-6 text-gold" />
-                </div>
-                <h3 className="text-lg font-semibold mb-3">{item.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed font-[family-name:var(--font-inter)]">
-                  {item.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== IM\u00D3VEIS DESTAQUE ===== */}
-      {properties.length > 0 && (
-        <section className="py-24 px-4 bg-card/50">
+        <div className="relative z-20 w-full pb-16 sm:pb-24 px-6 sm:px-12 lg:px-20">
           <div className="max-w-7xl mx-auto">
-            <div className="flex items-end justify-between mb-12">
-              <div>
-                <p className="text-gold text-sm tracking-[0.3em] uppercase mb-3 font-[family-name:var(--font-inter)]">
-                  Portf&oacute;lio
-                </p>
-                <h2 className="text-3xl sm:text-4xl font-bold">Im&oacute;veis em Destaque</h2>
-              </div>
-              <Link
-                href="/imoveis"
-                className="hidden sm:flex items-center gap-2 text-gold text-sm hover:text-gold-light transition-colors font-[family-name:var(--font-inter)]"
-              >
-                Ver todos
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {properties.map((property) => (
-                <PropertyCard key={property.id} property={property} />
-              ))}
-            </div>
-
-            <div className="mt-8 text-center sm:hidden">
-              <Button asChild variant="outline" className="border-gold/30 text-gold">
+            <p className="text-gold/80 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-4 font-body opacity-0 animate-fade-up">
+              Ricardo Rautenberg &mdash; CRECI SP 299919
+            </p>
+            <h1 className="text-[clamp(2.5rem,7vw,6rem)] font-bold text-white leading-[0.95] tracking-tight opacity-0 animate-fade-up delay-100">
+              Transformando
+              <br />
+              <span className="text-gradient-gold">Sonhos em Realidade</span>
+            </h1>
+            <p className="mt-5 sm:mt-6 text-base sm:text-lg text-white/50 max-w-lg leading-relaxed font-body opacity-0 animate-fade-up delay-200">
+              Corretor especialista em imóveis de alto padrão no ABC Paulista.
+              Atendimento exclusivo e personalizado.
+            </p>
+            <div className="flex flex-col sm:flex-row items-start gap-3 mt-8 sm:mt-10 opacity-0 animate-fade-up delay-300">
+              <Button asChild size="lg" className="btn-luxury bg-gold text-background hover:bg-gold-light text-sm px-8 py-6 tracking-[0.15em] uppercase font-body font-medium">
                 <Link href="/imoveis">
-                  Ver todos os im&oacute;veis
-                  <ArrowRight className="w-4 h-4 ml-2" />
+                  Ver Imóveis <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>
+              <Button asChild size="lg" variant="outline" className="border-white/15 text-white/80 hover:bg-white/5 hover:border-white/30 text-sm px-8 py-6 tracking-[0.1em] uppercase font-body">
+                <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP?.replace(/\D/g, "") || "5511999999999"}`} target="_blank" rel="noopener noreferrer">
+                  <Phone className="w-4 h-4 mr-2" /> WhatsApp
+                </a>
+              </Button>
             </div>
+          </div>
+          <div className="absolute bottom-6 right-8 sm:right-12 flex flex-col items-center gap-2 opacity-0 animate-fade-in delay-700">
+            <span className="text-[9px] tracking-[0.3em] text-white/30 uppercase font-body" style={{ writingMode: "vertical-lr" }}>scroll</span>
+            <div className="w-[1px] h-12 bg-gradient-to-b from-gold/60 to-transparent" />
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════ SHOWCASE — IMMERSIVE TOUR CTA ═══════ */}
+      <section className="relative py-20 sm:py-32 px-4 sm:px-6 overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          {/* Section header with parallax */}
+          <div className="flex items-end justify-between mb-10 sm:mb-14">
+            <FadeUp>
+              <p className="text-gold/70 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-2 font-body">
+                Portfólio
+              </p>
+              <h2 className="text-3xl sm:text-5xl font-bold leading-tight">
+                <TextReveal text="Imóveis Selecionados" />
+              </h2>
+            </FadeUp>
+            <FadeIn delay={0.3}>
+              <Link href="/imoveis" className="hidden sm:flex items-center gap-2 text-gold/80 text-xs tracking-[0.2em] uppercase hover:text-gold transition-colors font-body group">
+                Ver todos <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </FadeIn>
+          </div>
+
+          {/* Tour hero card with parallax */}
+          <ScaleUp>
+            <Link href="/tour" className="group block relative overflow-hidden mb-6">
+              <ParallaxImage speed={0.2} className="relative aspect-[21/9] sm:aspect-[3/1]">
+                <Image src="/images/cap3.jpg" alt="Tour virtual" fill className="object-cover transition-transform duration-[1.2s] group-hover:scale-105" sizes="100vw" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/60" />
+                <div className="absolute inset-0 flex items-center px-8 sm:px-16">
+                  <div>
+                    <p className="text-gold/80 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-2 font-body">Experiência imersiva</p>
+                    <h3 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-white font-display mb-3">Tour Virtual</h3>
+                    <p className="text-white/50 font-body text-sm sm:text-base max-w-md mb-5">
+                      Explore nossos imóveis de alto padrão com um tour interativo.
+                    </p>
+                    <span className="inline-flex items-center gap-2 text-gold text-xs tracking-[0.2em] uppercase font-body group-hover:gap-3 transition-all">
+                      <Play className="w-4 h-4 fill-gold" /> Iniciar Tour <ArrowRight className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </div>
+              </ParallaxImage>
+            </Link>
+          </ScaleUp>
+
+          {/* Photo grid with stagger */}
+          <StaggerContainer className="grid grid-cols-2 sm:grid-cols-4 gap-[3px]">
+            {SHOWCASE_IMAGES.slice(0, 4).map((img, i) => (
+              <StaggerItem key={i}>
+                <div className="relative overflow-hidden group cursor-pointer h-[160px] sm:h-[200px]">
+                  <Image src={img.src} alt={img.alt} fill className="object-cover transition-transform duration-[1s] group-hover:scale-105" sizes="25vw" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                    <p className="text-white text-[11px] font-body">{img.alt}</p>
+                  </div>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+
+          <FadeUp delay={0.2} className="mt-8 text-center sm:hidden">
+            <Button asChild variant="outline" className="border-gold/20 text-gold text-xs tracking-[0.15em] uppercase font-body">
+              <Link href="/imoveis">Ver todos os imóveis <ArrowRight className="w-3.5 h-3.5 ml-2" /></Link>
+            </Button>
+          </FadeUp>
+        </div>
+      </section>
+
+      {/* ═══════ DIVIDER ═══════ */}
+      <LineReveal className="mx-auto max-w-xs" />
+
+      {/* ═══════ LISTINGS ═══════ */}
+      {properties.length > 0 && (
+        <section className="py-20 sm:py-28 px-4 sm:px-6">
+          <div className="max-w-7xl mx-auto">
+            <FadeUp className="text-center mb-12 sm:mb-16">
+              <p className="text-gold/70 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-2 font-body">
+                Disponíveis
+              </p>
+              <h2 className="text-3xl sm:text-4xl font-bold">
+                <TextReveal text="Imóveis em Destaque" />
+              </h2>
+            </FadeUp>
+
+            <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" staggerDelay={0.12}>
+              {properties.map((property) => (
+                <StaggerItem key={property.id}>
+                  <PropertyCard property={property} />
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+
+            <FadeUp delay={0.3} className="mt-12 text-center">
+              <Button asChild variant="outline" size="lg" className="border-gold/20 text-gold hover:bg-gold/5 text-xs tracking-[0.15em] uppercase font-body px-10 py-6">
+                <Link href="/imoveis">Explorar portfólio completo <ArrowRight className="w-4 h-4 ml-2" /></Link>
+              </Button>
+            </FadeUp>
           </div>
         </section>
       )}
 
-      {/* ===== BAIRROS ===== */}
-      <section className="py-24 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <p className="text-gold text-sm tracking-[0.3em] uppercase mb-3 font-[family-name:var(--font-inter)]">
-              Localiza&ccedil;&otilde;es
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-bold">Bairros Nobres de SP</h2>
-          </div>
+      {/* ═══════ ABOUT — EDITORIAL SPLIT ═══════ */}
+      <section className="relative py-20 sm:py-32 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-card/50 to-background" />
 
-          <div className="flex flex-wrap justify-center gap-3">
-            {NEIGHBORHOODS.slice(0, 12).map((neighborhood) => (
-              <Link
-                key={neighborhood}
-                href={`/imoveis?bairro=${encodeURIComponent(neighborhood)}`}
-                className="px-5 py-2.5 bg-card border border-border rounded-full text-sm text-muted-foreground hover:text-gold hover:border-gold/30 transition-all duration-300 font-[family-name:var(--font-inter)]"
-              >
-                <MapPin className="w-3 h-3 inline mr-1.5 text-gold/50" />
-                {neighborhood}
-              </Link>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+            {/* Photo with parallax */}
+            <SlideIn direction="left" className="lg:col-span-5 relative">
+              <ParallaxImage speed={0.15} className="relative aspect-[3/4] max-w-sm mx-auto lg:mx-0">
+                <Image src="/images/ricardo-dark.jpg" alt="Ricardo Rautenberg" fill className="object-cover object-top" sizes="(max-width: 1024px) 80vw, 40vw" />
+                <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-gold via-gold/50 to-transparent" />
+              </ParallaxImage>
+              <FadeUp delay={0.4} className="absolute -bottom-4 -right-4 sm:bottom-6 sm:-right-6 bg-gold text-background px-5 py-3 font-body">
+                <p className="text-[10px] tracking-[0.3em] uppercase">CRECI SP</p>
+                <p className="text-lg font-bold font-display">299919</p>
+              </FadeUp>
+            </SlideIn>
+
+            {/* Text with reveals */}
+            <SlideIn direction="right" className="lg:col-span-7 lg:pl-4">
+              <FadeUp>
+                <p className="text-gold/70 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-body">
+                  O Especialista
+                </p>
+              </FadeUp>
+              <FadeUp delay={0.1}>
+                <h2 className="text-3xl sm:text-5xl font-bold mb-6 leading-tight">
+                  <TextReveal text="Ricardo Rautenberg" />
+                </h2>
+              </FadeUp>
+
+              <FadeUp delay={0.2}>
+                <div className="space-y-4 text-muted-foreground leading-relaxed font-body text-[15px]">
+                  <p>
+                    Com anos de experiência no mercado imobiliário de alto padrão,
+                    Ricardo se destaca pela curadoria rigorosa e pelo atendimento
+                    personalizado que dedica a cada cliente.
+                  </p>
+                  <p>
+                    Especializado em imóveis de alto padrão no ABC Paulista &mdash;
+                    Santo André, São Bernardo, São Caetano &mdash; conecta compradores
+                    exigentes às propriedades que definem excelência em moradia.
+                  </p>
+                </div>
+              </FadeUp>
+
+              {/* Stats */}
+              <FadeUp delay={0.3}>
+                <div className="flex items-center gap-10 mt-10">
+                  {[
+                    { number: "ABC", label: "Paulista" },
+                    { number: "Alto", label: "Padrão" },
+                    { number: "100%", label: "Dedicação" },
+                  ].map((stat) => (
+                    <div key={stat.label}>
+                      <p className="text-xl sm:text-2xl font-bold text-gold font-display">{stat.number}</p>
+                      <p className="text-[11px] text-muted-foreground tracking-wider uppercase font-body mt-0.5">{stat.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.4}>
+                <div className="flex gap-3 mt-8">
+                  <Button asChild className="btn-luxury bg-gold text-background hover:bg-gold-light text-xs tracking-[0.15em] uppercase font-body px-8 py-5">
+                    <Link href="/sobre">Saiba mais</Link>
+                  </Button>
+                  <Button asChild variant="outline" className="border-gold/20 text-gold hover:bg-gold/5 text-xs tracking-[0.15em] uppercase font-body px-8 py-5">
+                    <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP?.replace(/\D/g, "") || "5511999999999"}`} target="_blank" rel="noopener noreferrer">
+                      Fale comigo
+                    </a>
+                  </Button>
+                </div>
+              </FadeUp>
+            </SlideIn>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════ NEIGHBORHOODS ═══════ */}
+      <ParallaxSection speed={0.08} className="py-16 sm:py-24 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-10">
+          <FadeUp>
+            <p className="text-gold/70 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-2 font-body">
+              Localizações
+            </p>
+            <h2 className="text-2xl sm:text-4xl font-bold">
+              <TextReveal text="Bairros Nobres" />
+            </h2>
+          </FadeUp>
+        </div>
+
+        <StaggerContainer className="relative" staggerDelay={0.05}>
+          <div className="flex gap-3 overflow-x-auto scroll-snap-x pb-4 px-4 sm:px-6 sm:flex-wrap sm:justify-center sm:overflow-visible">
+            {NEIGHBORHOODS.slice(0, 14).map((neighborhood) => (
+              <StaggerItem key={neighborhood}>
+                <Link
+                  href={`/imoveis?bairro=${encodeURIComponent(neighborhood)}`}
+                  className="flex-shrink-0 px-6 py-3 bg-card/80 border border-border/60 rounded-none text-sm text-muted-foreground hover:text-gold hover:border-gold/30 transition-all duration-400 font-body group"
+                >
+                  <MapPin className="w-3 h-3 inline mr-2 text-gold/40 group-hover:text-gold transition-colors" />
+                  {neighborhood}
+                </Link>
+              </StaggerItem>
             ))}
           </div>
-        </div>
-      </section>
+          <div className="absolute top-0 right-0 bottom-0 w-12 bg-gradient-to-l from-background to-transparent pointer-events-none sm:hidden" />
+        </StaggerContainer>
+      </ParallaxSection>
 
-      {/* ===== SOBRE (Preview) ===== */}
-      <section className="py-24 px-4 bg-card/50">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Photo */}
-            <div className="relative aspect-[3/4] max-w-md mx-auto lg:mx-0 rounded-lg overflow-hidden">
-              <Image
-                src="/images/ricardo.jpg"
-                alt="Ricardo Rautenberg - Corretor de Im\u00F3veis de Alto Padr\u00E3o"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-            </div>
+      {/* ═══════ CTA FINAL ═══════ */}
+      <section className="relative py-24 sm:py-32 px-4 text-center overflow-hidden noise">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,168,76,0.06)_0%,transparent_70%)]" />
 
-            {/* Text */}
-            <div>
-              <p className="text-gold text-sm tracking-[0.3em] uppercase mb-3 font-[family-name:var(--font-inter)]">
-                O Especialista
-              </p>
-              <h2 className="text-3xl sm:text-4xl font-bold mb-6">Ricardo Rautenberg</h2>
-              <div className="space-y-4 text-muted-foreground leading-relaxed font-[family-name:var(--font-inter)]">
-                <p>
-                  Com anos de experi&ecirc;ncia no mercado imobili&aacute;rio de alto padr&atilde;o
-                  de S&atilde;o Paulo, Ricardo Rautenberg se destaca pela curadoria rigorosa e
-                  atendimento personalizado que oferece a cada cliente.
-                </p>
-                <p>
-                  Especializado nos bairros mais nobres da capital &mdash; Itaim Bibi, Jardins,
-                  Vila Nova Concei&ccedil;&atilde;o, Moema e regi&atilde;o &mdash; conecta compradores
-                  exigentes &agrave;s propriedades que definem o que h&aacute; de melhor em
-                  moradia de luxo.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-8 mt-8">
-                <div>
-                  <p className="text-2xl font-bold text-gold">CRECI</p>
-                  <p className="text-sm text-muted-foreground font-[family-name:var(--font-inter)]">SP - 299919</p>
-                </div>
-                <div className="w-[1px] h-12 bg-border" />
-                <div>
-                  <p className="text-2xl font-bold text-gold">SP</p>
-                  <p className="text-sm text-muted-foreground font-[family-name:var(--font-inter)]">S&atilde;o Paulo</p>
-                </div>
-              </div>
-
-              <Button
-                asChild
-                className="mt-8 bg-gold text-background hover:bg-gold-light"
-              >
-                <Link href="/sobre">
-                  Conhe&ccedil;a mais
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
+        <div className="relative z-10 max-w-xl mx-auto">
+          <LineReveal className="mx-auto max-w-12 mb-8" />
+          <FadeUp>
+            <h2 className="text-3xl sm:text-5xl font-bold mb-5 leading-tight">
+              <TextReveal text="Encontre seu imóvel ideal" />
+            </h2>
+          </FadeUp>
+          <FadeUp delay={0.15}>
+            <p className="text-muted-foreground mb-10 font-body text-[15px] leading-relaxed">
+              Entre em contato e descubra as melhores oportunidades do mercado
+              imobiliário de alto padrão no ABC Paulista.
+            </p>
+          </FadeUp>
+          <FadeUp delay={0.3}>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Button asChild size="lg" className="btn-luxury bg-gold text-background hover:bg-gold-light px-10 py-6 text-xs tracking-[0.15em] uppercase font-body">
+                <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP?.replace(/\D/g, "") || "5511999999999"}`} target="_blank" rel="noopener noreferrer">
+                  <Phone className="w-4 h-4 mr-2" /> WhatsApp
+                </a>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="border-gold/20 text-gold hover:bg-gold/5 px-10 py-6 text-xs tracking-[0.15em] uppercase font-body">
+                <Link href="/contato">Contato</Link>
               </Button>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== CTA FINAL ===== */}
-      <section className="py-24 px-4 text-center">
-        <div className="max-w-2xl mx-auto">
-          <div className="w-16 h-[1px] bg-gold mx-auto mb-8" />
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            Encontre seu im&oacute;vel ideal
-          </h2>
-          <p className="text-muted-foreground mb-8 font-[family-name:var(--font-inter)]">
-            Entre em contato e descubra as melhores oportunidades do mercado imobili&aacute;rio
-            de alto padr&atilde;o em S&atilde;o Paulo.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button
-              asChild
-              size="lg"
-              className="bg-gold text-background hover:bg-gold-light px-8 py-6"
-            >
-              <a
-                href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP?.replace(/\D/g, "") || "5511999999999"}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Phone className="w-5 h-5 mr-2" />
-                Conversar no WhatsApp
-              </a>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="border-gold/30 text-gold hover:bg-gold/10 px-8 py-6"
-            >
-              <Link href="/contato">Entre em contato</Link>
-            </Button>
-          </div>
+          </FadeUp>
         </div>
       </section>
     </>

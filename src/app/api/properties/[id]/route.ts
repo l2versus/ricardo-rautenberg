@@ -15,7 +15,7 @@ export async function GET(req: NextRequest, { params }: Props) {
   });
 
   if (!property) {
-    return NextResponse.json({ error: "Im\u00F3vel n\u00E3o encontrado" }, { status: 404 });
+    return NextResponse.json({ error: "Imóvel não encontrado" }, { status: 404 });
   }
 
   return NextResponse.json(property);
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest, { params }: Props) {
 export async function PUT(req: NextRequest, { params }: Props) {
   const session = await getSession();
   if (!session) {
-    return NextResponse.json({ error: "N\u00E3o autorizado" }, { status: 401 });
+    return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
   }
 
   const { id } = await params;
@@ -82,7 +82,7 @@ export async function PUT(req: NextRequest, { params }: Props) {
 export async function DELETE(req: NextRequest, { params }: Props) {
   const session = await getSession();
   if (!session) {
-    return NextResponse.json({ error: "N\u00E3o autorizado" }, { status: 401 });
+    return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
   }
 
   const { id } = await params;

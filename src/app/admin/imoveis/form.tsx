@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { NEIGHBORHOODS, PROPERTY_TYPES, PROPERTY_STATUS, AMENITIES } from "@/lib/utils";
-import { Upload, X, ArrowLeft, Save } from "lucide-react";
+import { Upload, X, ArrowLeft, Save, MapPin, Image as ImageIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -115,7 +115,7 @@ export function PropertyForm({ initialData }: PropertyFormProps) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!form.title || !form.neighborhood) {
-      alert("T\u00EDtulo e bairro s\u00E3o obrigat\u00F3rios");
+      alert("Título e bairro são obrigatórios");
       return;
     }
 
@@ -145,62 +145,70 @@ export function PropertyForm({ initialData }: PropertyFormProps) {
         alert(data.error || "Erro ao salvar");
       }
     } catch {
-      alert("Erro de conex\u00E3o");
+      alert("Erro de conexão");
     } finally {
       setSaving(false);
     }
   }
 
+  // Build Google Maps embed URL from address + neighborhood
+  const mapQuery = encodeURIComponent(
+    `${form.address ? form.address + ", " : ""}${form.neighborhood || "ABC Paulista"}, SP, Brasil`
+  );
+
   return (
-    <form onSubmit={handleSubmit} className="max-w-4xl mx-auto px-4 py-8">
+    <form onSubmit={handleSubmit} className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+      {/* Header */}
       <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-4">
-          <Link href="/admin/imoveis" className="text-muted-foreground hover:text-gold">
+        <div className="flex items-center gap-3">
+          <Link href="/admin/imoveis" className="text-muted-foreground/50 hover:text-gold transition-colors">
             <ArrowLeft className="w-5 h-5" />
           </Link>
-          <h1 className="text-2xl font-bold">
-            {initialData ? "Editar Im\u00F3vel" : "Novo Im\u00F3vel"}
+          <h1 className="text-xl sm:text-2xl font-bold font-display">
+            {initialData ? "Editar Imóvel" : "Novo Imóvel"}
           </h1>
         </div>
-        <Button type="submit" disabled={saving} className="bg-gold text-background hover:bg-gold-light">
-          <Save className="w-4 h-4 mr-2" />
+        <Button type="submit" disabled={saving} className="bg-gold text-background hover:bg-gold-light text-xs tracking-wider uppercase font-body h-9 px-5">
+          <Save className="w-3.5 h-3.5 mr-1.5" />
           {saving ? "Salvando..." : "Salvar"}
         </Button>
       </div>
 
-      <div className="space-y-8">
-        {/* Basic Info */}
-        <section className="bg-card p-6 rounded-lg border border-border space-y-4">
-          <h2 className="text-lg font-semibold mb-4">Informa\u00E7\u00F5es B\u00E1sicas</h2>
+      <div className="space-y-6">
+        {/* ═══ Informações Básicas ═══ */}
+        <section className="border border-border/40 bg-card/20 p-5 sm:p-6 space-y-4">
+          <h2 className="text-sm font-semibold font-display tracking-wider uppercase text-gold/70 mb-4">
+            Informações Básicas
+          </h2>
 
           <div>
-            <Label className="font-[family-name:var(--font-inter)]">T\u00EDtulo *</Label>
+            <Label className="text-xs font-body tracking-wider uppercase text-muted-foreground">Título *</Label>
             <Input
               value={form.title}
               onChange={(e) => updateForm("title", e.target.value)}
-              placeholder="Cobertura Duplex no Itaim Bibi com Piscina Privativa"
-              className="mt-1 bg-background"
+              placeholder="Cobertura Duplex no ABC com Piscina Privativa"
+              className="mt-1.5 bg-background border-border/60 h-10 font-body"
               required
             />
           </div>
 
           <div>
-            <Label className="font-[family-name:var(--font-inter)]">Descri\u00E7\u00E3o</Label>
+            <Label className="text-xs font-body tracking-wider uppercase text-muted-foreground">Descrição</Label>
             <Textarea
               value={form.description}
               onChange={(e) => updateForm("description", e.target.value)}
-              placeholder="Descreva o im\u00F3vel em detalhes..."
-              className="mt-1 bg-background min-h-[120px]"
+              placeholder="Descreva o imóvel em detalhes..."
+              className="mt-1.5 bg-background border-border/60 min-h-[100px] font-body"
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <Label className="font-[family-name:var(--font-inter)]">Tipo</Label>
+              <Label className="text-xs font-body tracking-wider uppercase text-muted-foreground">Tipo</Label>
               <select
                 value={form.type}
                 onChange={(e) => updateForm("type", e.target.value)}
-                className="w-full mt-1 bg-background border border-input rounded-md px-3 py-2 text-sm"
+                className="w-full mt-1.5 bg-background border border-border/60 rounded-md px-3 py-2 text-sm font-body h-10"
               >
                 {PROPERTY_TYPES.map((t) => (
                   <option key={t.value} value={t.value}>{t.label}</option>
@@ -208,22 +216,22 @@ export function PropertyForm({ initialData }: PropertyFormProps) {
               </select>
             </div>
             <div>
-              <Label className="font-[family-name:var(--font-inter)]">Finalidade</Label>
+              <Label className="text-xs font-body tracking-wider uppercase text-muted-foreground">Finalidade</Label>
               <select
                 value={form.purpose}
                 onChange={(e) => updateForm("purpose", e.target.value)}
-                className="w-full mt-1 bg-background border border-input rounded-md px-3 py-2 text-sm"
+                className="w-full mt-1.5 bg-background border border-border/60 rounded-md px-3 py-2 text-sm font-body h-10"
               >
                 <option value="sale">Venda</option>
                 <option value="rent">Aluguel</option>
               </select>
             </div>
             <div>
-              <Label className="font-[family-name:var(--font-inter)]">Status</Label>
+              <Label className="text-xs font-body tracking-wider uppercase text-muted-foreground">Status</Label>
               <select
                 value={form.status}
                 onChange={(e) => updateForm("status", e.target.value)}
-                className="w-full mt-1 bg-background border border-input rounded-md px-3 py-2 text-sm"
+                className="w-full mt-1.5 bg-background border border-border/60 rounded-md px-3 py-2 text-sm font-body h-10"
               >
                 {PROPERTY_STATUS.map((s) => (
                   <option key={s.value} value={s.value}>{s.label}</option>
@@ -233,45 +241,48 @@ export function PropertyForm({ initialData }: PropertyFormProps) {
           </div>
         </section>
 
-        {/* Price */}
-        <section className="bg-card p-6 rounded-lg border border-border space-y-4">
-          <h2 className="text-lg font-semibold mb-4">Valor</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <Label className="font-[family-name:var(--font-inter)]">Pre\u00E7o (R$)</Label>
+        {/* ═══ Valor ═══ */}
+        <section className="border border-border/40 bg-card/20 p-5 sm:p-6 space-y-4">
+          <h2 className="text-sm font-semibold font-display tracking-wider uppercase text-gold/70 mb-4">
+            Valor
+          </h2>
+          <div className="flex items-end gap-4">
+            <div className="flex-1">
+              <Label className="text-xs font-body tracking-wider uppercase text-muted-foreground">Preço (R$)</Label>
               <Input
                 type="number"
                 value={form.price}
                 onChange={(e) => updateForm("price", e.target.value)}
                 placeholder="5000000"
-                className="mt-1 bg-background"
+                className="mt-1.5 bg-background border-border/60 h-10 font-body"
                 disabled={form.priceOnRequest}
               />
             </div>
-            <div className="flex items-end">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={form.priceOnRequest}
-                  onChange={(e) => updateForm("priceOnRequest", e.target.checked)}
-                  className="accent-gold w-4 h-4"
-                />
-                <span className="text-sm font-[family-name:var(--font-inter)]">Sob Consulta</span>
-              </label>
-            </div>
+            <label className="flex items-center gap-2 cursor-pointer pb-2">
+              <input
+                type="checkbox"
+                checked={form.priceOnRequest}
+                onChange={(e) => updateForm("priceOnRequest", e.target.checked)}
+                className="accent-[#C9A84C] w-4 h-4"
+              />
+              <span className="text-sm font-body whitespace-nowrap">Sob Consulta</span>
+            </label>
           </div>
         </section>
 
-        {/* Location */}
-        <section className="bg-card p-6 rounded-lg border border-border space-y-4">
-          <h2 className="text-lg font-semibold mb-4">Localiza\u00E7\u00E3o</h2>
+        {/* ═══ Localização + Mapa ═══ */}
+        <section className="border border-border/40 bg-card/20 p-5 sm:p-6 space-y-4">
+          <h2 className="text-sm font-semibold font-display tracking-wider uppercase text-gold/70 mb-4">
+            <MapPin className="w-4 h-4 inline mr-1.5 -mt-0.5" />
+            Localização
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <Label className="font-[family-name:var(--font-inter)]">Bairro *</Label>
+              <Label className="text-xs font-body tracking-wider uppercase text-muted-foreground">Bairro *</Label>
               <select
                 value={form.neighborhood}
                 onChange={(e) => updateForm("neighborhood", e.target.value)}
-                className="w-full mt-1 bg-background border border-input rounded-md px-3 py-2 text-sm"
+                className="w-full mt-1.5 bg-background border border-border/60 rounded-md px-3 py-2 text-sm font-body h-10"
                 required
               >
                 <option value="">Selecione...</option>
@@ -281,56 +292,81 @@ export function PropertyForm({ initialData }: PropertyFormProps) {
               </select>
             </div>
             <div>
-              <Label className="font-[family-name:var(--font-inter)]">Endere\u00E7o</Label>
+              <Label className="text-xs font-body tracking-wider uppercase text-muted-foreground">Endereço</Label>
               <Input
                 value={form.address}
                 onChange={(e) => updateForm("address", e.target.value)}
-                placeholder="Rua, n\u00FAmero (opcional)"
-                className="mt-1 bg-background"
+                placeholder="Rua, número (opcional)"
+                className="mt-1.5 bg-background border-border/60 h-10 font-body"
               />
             </div>
           </div>
+
+          {/* Google Maps Preview */}
+          {form.neighborhood && (
+            <div className="mt-4">
+              <p className="text-[10px] text-muted-foreground/50 font-body tracking-wider uppercase mb-2">
+                Pré-visualização do mapa
+              </p>
+              <div className="relative aspect-[2/1] sm:aspect-[3/1] bg-card border border-border/30 overflow-hidden">
+                <iframe
+                  src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${mapQuery}&zoom=15`}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="absolute inset-0"
+                />
+              </div>
+            </div>
+          )}
         </section>
 
-        {/* Features */}
-        <section className="bg-card p-6 rounded-lg border border-border space-y-4">
-          <h2 className="text-lg font-semibold mb-4">Caracter\u00EDsticas</h2>
+        {/* ═══ Características ═══ */}
+        <section className="border border-border/40 bg-card/20 p-5 sm:p-6 space-y-4">
+          <h2 className="text-sm font-semibold font-display tracking-wider uppercase text-gold/70 mb-4">
+            Características
+          </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { key: "area", label: "\u00C1rea Total (m\u00B2)" },
-              { key: "usableArea", label: "\u00C1rea \u00DAtil (m\u00B2)" },
+              { key: "area", label: "Área Total (m²)" },
+              { key: "usableArea", label: "Área Útil (m²)" },
               { key: "bedrooms", label: "Quartos" },
-              { key: "suites", label: "Su\u00EDtes" },
+              { key: "suites", label: "Suítes" },
               { key: "bathrooms", label: "Banheiros" },
               { key: "parkingSpots", label: "Vagas" },
               { key: "floors", label: "Andares" },
             ].map(({ key, label }) => (
               <div key={key}>
-                <Label className="font-[family-name:var(--font-inter)] text-xs">{label}</Label>
+                <Label className="text-[10px] font-body tracking-wider uppercase text-muted-foreground">{label}</Label>
                 <Input
                   type="number"
                   value={form[key as keyof typeof form] as string}
                   onChange={(e) => updateForm(key, e.target.value)}
-                  className="mt-1 bg-background"
+                  className="mt-1.5 bg-background border-border/60 h-10 font-body"
                 />
               </div>
             ))}
           </div>
         </section>
 
-        {/* Amenities */}
-        <section className="bg-card p-6 rounded-lg border border-border">
-          <h2 className="text-lg font-semibold mb-4">Comodidades</h2>
+        {/* ═══ Comodidades ═══ */}
+        <section className="border border-border/40 bg-card/20 p-5 sm:p-6">
+          <h2 className="text-sm font-semibold font-display tracking-wider uppercase text-gold/70 mb-4">
+            Comodidades
+          </h2>
           <div className="flex flex-wrap gap-2">
             {AMENITIES.map((amenity) => (
               <button
                 key={amenity}
                 type="button"
                 onClick={() => toggleAmenity(amenity)}
-                className={`px-3 py-1.5 rounded-full text-xs transition-colors border ${
+                className={`px-3 py-1.5 text-[11px] font-body transition-all border ${
                   form.amenities.includes(amenity)
-                    ? "bg-gold/20 border-gold/40 text-gold"
-                    : "bg-background border-border text-muted-foreground hover:border-gold/30"
+                    ? "bg-gold/15 border-gold/40 text-gold"
+                    : "bg-transparent border-border/40 text-muted-foreground/60 hover:border-gold/20 hover:text-muted-foreground"
                 }`}
               >
                 {amenity}
@@ -339,27 +375,33 @@ export function PropertyForm({ initialData }: PropertyFormProps) {
           </div>
         </section>
 
-        {/* Images */}
-        <section className="bg-card p-6 rounded-lg border border-border">
-          <h2 className="text-lg font-semibold mb-4">Fotos</h2>
+        {/* ═══ Fotos ═══ */}
+        <section className="border border-border/40 bg-card/20 p-5 sm:p-6">
+          <h2 className="text-sm font-semibold font-display tracking-wider uppercase text-gold/70 mb-4">
+            <ImageIcon className="w-4 h-4 inline mr-1.5 -mt-0.5" />
+            Fotos
+          </h2>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
             {images.map((img, i) => (
-              <div key={i} className="relative aspect-[4/3] rounded overflow-hidden group">
+              <div key={i} className="relative aspect-[4/3] overflow-hidden group border border-border/30">
                 <Image src={img.url} alt={img.alt || ""} fill className="object-cover" sizes="200px" />
                 <button
                   type="button"
                   onClick={() => removeImage(i)}
-                  className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute top-1.5 right-1.5 bg-red-500/90 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   <X className="w-3 h-3" />
                 </button>
+                <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-2 py-1 text-[9px] text-white/50 font-body">
+                  Foto {i + 1}
+                </div>
               </div>
             ))}
 
-            <label className="aspect-[4/3] rounded border-2 border-dashed border-border hover:border-gold/30 flex flex-col items-center justify-center cursor-pointer transition-colors">
-              <Upload className="w-6 h-6 text-muted-foreground mb-1" />
-              <span className="text-xs text-muted-foreground font-[family-name:var(--font-inter)]">
+            <label className="aspect-[4/3] border border-dashed border-border/40 hover:border-gold/30 flex flex-col items-center justify-center cursor-pointer transition-colors">
+              <Upload className="w-5 h-5 text-muted-foreground/30 mb-1" />
+              <span className="text-[10px] text-muted-foreground/40 font-body tracking-wider">
                 {uploading ? "Enviando..." : "Adicionar"}
               </span>
               <input
@@ -374,71 +416,75 @@ export function PropertyForm({ initialData }: PropertyFormProps) {
           </div>
         </section>
 
-        {/* Options */}
-        <section className="bg-card p-6 rounded-lg border border-border space-y-4">
-          <h2 className="text-lg font-semibold mb-4">Op\u00E7\u00F5es</h2>
+        {/* ═══ Opções ═══ */}
+        <section className="border border-border/40 bg-card/20 p-5 sm:p-6 space-y-4">
+          <h2 className="text-sm font-semibold font-display tracking-wider uppercase text-gold/70 mb-4">
+            Opções
+          </h2>
           <div className="space-y-3">
-            <label className="flex items-center gap-3 cursor-pointer">
+            <label className="flex items-start gap-3 cursor-pointer group">
               <input
                 type="checkbox"
                 checked={form.isFeatured}
                 onChange={(e) => updateForm("isFeatured", e.target.checked)}
-                className="accent-gold w-4 h-4"
+                className="accent-[#C9A84C] w-4 h-4 mt-0.5"
               />
               <div>
-                <span className="text-sm font-medium">Destaque na Home</span>
-                <p className="text-xs text-muted-foreground font-[family-name:var(--font-inter)]">
-                  Exibir este im\u00F3vel na se\u00E7\u00E3o de destaques da p\u00E1gina inicial
+                <span className="text-sm font-medium group-hover:text-gold transition-colors">Destaque na Home</span>
+                <p className="text-[11px] text-muted-foreground/50 font-body mt-0.5">
+                  Exibir este imóvel na seção de destaques da página inicial
                 </p>
               </div>
             </label>
-            <label className="flex items-center gap-3 cursor-pointer">
+            <label className="flex items-start gap-3 cursor-pointer group">
               <input
                 type="checkbox"
                 checked={form.isOffMarket}
                 onChange={(e) => updateForm("isOffMarket", e.target.checked)}
-                className="accent-gold w-4 h-4"
+                className="accent-[#C9A84C] w-4 h-4 mt-0.5"
               />
               <div>
-                <span className="text-sm font-medium">Off-Market (Sigiloso)</span>
-                <p className="text-xs text-muted-foreground font-[family-name:var(--font-inter)]">
-                  N\u00E3o aparece na listagem nem no Google. Acess\u00EDvel apenas por link direto
+                <span className="text-sm font-medium group-hover:text-gold transition-colors">Off-Market (Sigiloso)</span>
+                <p className="text-[11px] text-muted-foreground/50 font-body mt-0.5">
+                  Não aparece na listagem nem no Google. Acessível apenas por link direto
                 </p>
               </div>
             </label>
           </div>
         </section>
 
-        {/* SEO */}
-        <section className="bg-card p-6 rounded-lg border border-border space-y-4">
-          <h2 className="text-lg font-semibold mb-4">SEO (Opcional)</h2>
+        {/* ═══ SEO + Vídeo ═══ */}
+        <section className="border border-border/40 bg-card/20 p-5 sm:p-6 space-y-4">
+          <h2 className="text-sm font-semibold font-display tracking-wider uppercase text-gold/70 mb-4">
+            SEO e Mídia
+          </h2>
           <div>
-            <Label className="font-[family-name:var(--font-inter)]">T\u00EDtulo SEO</Label>
+            <Label className="text-xs font-body tracking-wider uppercase text-muted-foreground">Título SEO</Label>
             <Input
               value={form.metaTitle}
               onChange={(e) => updateForm("metaTitle", e.target.value)}
-              placeholder="T\u00EDtulo para o Google (max 60 caracteres)"
-              className="mt-1 bg-background"
+              placeholder="Título para o Google (max 60 caracteres)"
+              className="mt-1.5 bg-background border-border/60 h-10 font-body"
               maxLength={60}
             />
           </div>
           <div>
-            <Label className="font-[family-name:var(--font-inter)]">Descri\u00E7\u00E3o SEO</Label>
+            <Label className="text-xs font-body tracking-wider uppercase text-muted-foreground">Descrição SEO</Label>
             <Textarea
               value={form.metaDescription}
               onChange={(e) => updateForm("metaDescription", e.target.value)}
-              placeholder="Descri\u00E7\u00E3o para o Google (max 160 caracteres)"
-              className="mt-1 bg-background"
+              placeholder="Descrição para o Google (max 160 caracteres)"
+              className="mt-1.5 bg-background border-border/60 font-body"
               maxLength={160}
             />
           </div>
           <div>
-            <Label className="font-[family-name:var(--font-inter)]">URL do V\u00EDdeo</Label>
+            <Label className="text-xs font-body tracking-wider uppercase text-muted-foreground">URL do Vídeo</Label>
             <Input
               value={form.videoUrl}
               onChange={(e) => updateForm("videoUrl", e.target.value)}
               placeholder="https://youtube.com/watch?v=..."
-              className="mt-1 bg-background"
+              className="mt-1.5 bg-background border-border/60 h-10 font-body"
             />
           </div>
         </section>
@@ -446,9 +492,9 @@ export function PropertyForm({ initialData }: PropertyFormProps) {
 
       {/* Bottom save */}
       <div className="mt-8 flex justify-end">
-        <Button type="submit" disabled={saving} className="bg-gold text-background hover:bg-gold-light px-8">
-          <Save className="w-4 h-4 mr-2" />
-          {saving ? "Salvando..." : "Salvar Im\u00F3vel"}
+        <Button type="submit" disabled={saving} className="bg-gold text-background hover:bg-gold-light text-xs tracking-wider uppercase font-body h-10 px-8">
+          <Save className="w-3.5 h-3.5 mr-1.5" />
+          {saving ? "Salvando..." : "Salvar Imóvel"}
         </Button>
       </div>
     </form>

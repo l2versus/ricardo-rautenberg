@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -87,7 +87,7 @@ export default async function PropertyPage({ params }: Props) {
   const amenities = property.amenities ? property.amenities.split(",").map((a) => a.trim()) : [];
 
   return (
-    <div className="py-8 px-4">
+    <div className="pt-28 sm:pt-36 pb-20 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Back */}
         <Link
@@ -135,47 +135,36 @@ export default async function PropertyPage({ params }: Props) {
               </div>
             </div>
 
-            <Separator className="bg-border" />
+            <div className="h-[1px] bg-gradient-to-r from-transparent via-border/40 to-transparent" />
 
             {/* Features Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {property.area && (
-                <div className="bg-card p-4 rounded-lg border border-border text-center">
-                  <Maximize className="w-5 h-5 text-gold mx-auto mb-2" />
-                  <p className="text-lg font-semibold">{formatArea(property.area)}</p>
-                  <p className="text-xs text-muted-foreground font-[family-name:var(--font-inter)]">\u00C1rea Total</p>
-                </div>
-              )}
-              {property.bedrooms && (
-                <div className="bg-card p-4 rounded-lg border border-border text-center">
-                  <Bed className="w-5 h-5 text-gold mx-auto mb-2" />
-                  <p className="text-lg font-semibold">{property.bedrooms}</p>
-                  <p className="text-xs text-muted-foreground font-[family-name:var(--font-inter)]">
-                    {property.suites ? `Quartos (${property.suites} su\u00EDtes)` : "Quartos"}
-                  </p>
-                </div>
-              )}
-              {property.bathrooms && (
-                <div className="bg-card p-4 rounded-lg border border-border text-center">
-                  <Bath className="w-5 h-5 text-gold mx-auto mb-2" />
-                  <p className="text-lg font-semibold">{property.bathrooms}</p>
-                  <p className="text-xs text-muted-foreground font-[family-name:var(--font-inter)]">Banheiros</p>
-                </div>
-              )}
-              {property.parkingSpots && (
-                <div className="bg-card p-4 rounded-lg border border-border text-center">
-                  <Car className="w-5 h-5 text-gold mx-auto mb-2" />
-                  <p className="text-lg font-semibold">{property.parkingSpots}</p>
-                  <p className="text-xs text-muted-foreground font-[family-name:var(--font-inter)]">Vagas</p>
-                </div>
-              )}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                property.area && { icon: Maximize, value: formatArea(property.area), label: "Área Total" },
+                property.bedrooms && { icon: Bed, value: String(property.bedrooms), label: property.suites ? `Quartos (${property.suites} suítes)` : "Quartos" },
+                property.bathrooms && { icon: Bath, value: String(property.bathrooms), label: "Banheiros" },
+                property.parkingSpots && { icon: Car, value: String(property.parkingSpots), label: "Vagas" },
+              ].filter(Boolean).map((feat, i) => {
+                const F = feat as { icon: typeof Maximize; value: string; label: string };
+                return (
+                  <div key={i} className="group relative bg-card/50 border border-border/40 hover:border-gold/20 p-5 text-center transition-all duration-500">
+                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-gold/0 group-hover:via-gold/20 to-transparent transition-all duration-500" />
+                    <F.icon className="w-5 h-5 text-gold/60 mx-auto mb-3" />
+                    <p className="text-xl font-bold font-display">{F.value}</p>
+                    <p className="text-[11px] text-muted-foreground/50 font-body mt-1">{F.label}</p>
+                  </div>
+                );
+              })}
             </div>
 
             {/* Description */}
             {property.description && (
               <div>
-                <h2 className="text-xl font-semibold mb-4">Descri&ccedil;&atilde;o</h2>
-                <div className="text-muted-foreground leading-relaxed whitespace-pre-line font-[family-name:var(--font-inter)]">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-1 h-5 bg-gold/60" />
+                  <h2 className="text-lg font-semibold font-display tracking-wider uppercase">{"Descrição"}</h2>
+                </div>
+                <div className="text-muted-foreground/70 leading-relaxed whitespace-pre-line font-body text-[15px]">
                   {property.description}
                 </div>
               </div>
@@ -184,14 +173,17 @@ export default async function PropertyPage({ params }: Props) {
             {/* Amenities */}
             {amenities.length > 0 && (
               <div>
-                <h2 className="text-xl font-semibold mb-4">Comodidades</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div className="flex items-center gap-2 mb-5">
+                  <div className="w-1 h-5 bg-gold/60" />
+                  <h2 className="text-lg font-semibold font-display tracking-wider uppercase">Comodidades</h2>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {amenities.map((amenity) => (
                     <div
                       key={amenity}
-                      className="flex items-center gap-2 text-sm text-muted-foreground font-[family-name:var(--font-inter)]"
+                      className="flex items-center gap-2.5 text-sm text-muted-foreground/60 font-body py-2 px-3 bg-card/30 border border-border/20 hover:border-gold/15 transition-colors"
                     >
-                      <CheckCircle2 className="w-4 h-4 text-gold/70 shrink-0" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-gold/50 shrink-0" />
                       {amenity}
                     </div>
                   ))}
@@ -200,77 +192,82 @@ export default async function PropertyPage({ params }: Props) {
             )}
 
             {/* Extra Info */}
-            <div className="grid grid-cols-2 gap-4">
-              {property.usableArea && (
-                <div className="flex items-center gap-3 text-sm font-[family-name:var(--font-inter)]">
-                  <Layers className="w-4 h-4 text-gold/70" />
-                  <span className="text-muted-foreground">\u00C1rea \u00FAtil: {formatArea(property.usableArea)}</span>
-                </div>
-              )}
-              {property.floors && (
-                <div className="flex items-center gap-3 text-sm font-[family-name:var(--font-inter)]">
-                  <Building2 className="w-4 h-4 text-gold/70" />
-                  <span className="text-muted-foreground">{property.floors} andares</span>
-                </div>
-              )}
-            </div>
+            {(property.usableArea || property.floors) && (
+              <div className="flex flex-wrap gap-4 py-4 border-t border-border/20">
+                {property.usableArea && (
+                  <div className="flex items-center gap-2.5 text-sm font-body">
+                    <Layers className="w-4 h-4 text-gold/50" />
+                    <span className="text-muted-foreground/60">{"Área Útil: "}{formatArea(property.usableArea)}</span>
+                  </div>
+                )}
+                {property.floors && (
+                  <div className="flex items-center gap-2.5 text-sm font-body">
+                    <Building2 className="w-4 h-4 text-gold/50" />
+                    <span className="text-muted-foreground/60">{property.floors} andares</span>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Sidebar - Contact */}
           <div className="lg:col-span-1">
-            <div className="sticky top-28 bg-card border border-border rounded-lg p-6 space-y-6">
-              {/* Price */}
-              <div>
-                <p className="text-sm text-muted-foreground font-[family-name:var(--font-inter)]">
+            <div className="sticky top-28 border border-border/30 bg-card/30 overflow-hidden">
+              {/* Price header */}
+              <div className="relative p-6 bg-gradient-to-br from-gold/[0.06] to-transparent">
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-gold/40 via-gold/60 to-gold/40" />
+                <p className="text-[10px] tracking-[0.3em] text-muted-foreground/40 uppercase font-body mb-1">
                   {property.purpose === "rent" ? "Aluguel" : "Valor"}
                 </p>
-                <p className="text-3xl font-bold text-gold mt-1">
+                <p className="text-2xl sm:text-3xl font-bold text-gold font-display">
                   {formatPrice(property.price, property.priceOnRequest)}
                 </p>
               </div>
 
-              <Separator className="bg-border" />
+              <div className="p-6 space-y-5">
+                {/* Agent */}
+                <div className="flex items-center gap-3">
+                  <Image
+                    src="/images/logo.png"
+                    alt="RR"
+                    width={44}
+                    height={44}
+                    className="opacity-70"
+                  />
+                  <div>
+                    <p className="font-semibold text-sm font-display">Ricardo Rautenberg</p>
+                    <p className="text-[10px] text-muted-foreground/40 font-body tracking-wider">
+                      CRECI SP - 299919
+                    </p>
+                  </div>
+                </div>
 
-              {/* Agent */}
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-full bg-gold/10 flex items-center justify-center">
-                  <span className="text-gold font-bold text-lg font-[family-name:var(--font-playfair)]">
-                    RR
-                  </span>
-                </div>
-                <div>
-                  <p className="font-semibold">Ricardo Rautenberg</p>
-                  <p className="text-xs text-muted-foreground font-[family-name:var(--font-inter)]">
-                    CRECI SP - 299919
-                  </p>
-                </div>
+                {/* Actions */}
+                <Button
+                  asChild
+                  className="w-full bg-[#25D366] hover:bg-[#20BD5A] text-white py-5 text-sm font-body tracking-wider rounded-none"
+                >
+                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                    <Phone className="w-4 h-4 mr-2" />
+                    Conversar no WhatsApp
+                  </a>
+                </Button>
+
+                <Button
+                  asChild
+                  variant="outline"
+                  className="w-full border-gold/20 text-gold hover:bg-gold/5 py-5 text-sm font-body tracking-wider rounded-none"
+                >
+                  <a href="tel:+5511999999999">
+                    <Phone className="w-4 h-4 mr-2" />
+                    Ligar agora
+                  </a>
+                </Button>
+
+                <p className="text-[10px] text-center text-muted-foreground/30 font-body tracking-wider">
+                  Atendimento personalizado e discreto
+                </p>
               </div>
-
-              {/* Actions */}
-              <Button
-                asChild
-                className="w-full bg-[#25D366] hover:bg-[#20BD5A] text-white py-6 text-base"
-              >
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-                  <Phone className="w-5 h-5 mr-2" />
-                  Conversar no WhatsApp
-                </a>
-              </Button>
-
-              <Button
-                asChild
-                variant="outline"
-                className="w-full border-gold/30 text-gold hover:bg-gold/10 py-6"
-              >
-                <a href="tel:+5511999999999">
-                  <Phone className="w-4 h-4 mr-2" />
-                  Ligar agora
-                </a>
-              </Button>
-
-              <p className="text-xs text-center text-muted-foreground font-[family-name:var(--font-inter)]">
-                Atendimento personalizado e discreto
-              </p>
             </div>
           </div>
         </div>

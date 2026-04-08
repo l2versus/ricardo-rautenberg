@@ -6,17 +6,17 @@ export async function POST(req: NextRequest) {
   const { email, password } = await req.json();
 
   if (!email || !password) {
-    return NextResponse.json({ error: "Email e senha obrigat\u00F3rios" }, { status: 400 });
+    return NextResponse.json({ error: "Email e senha obrigatórios" }, { status: 400 });
   }
 
   const admin = await prisma.admin.findUnique({ where: { email } });
   if (!admin) {
-    return NextResponse.json({ error: "Credenciais inv\u00E1lidas" }, { status: 401 });
+    return NextResponse.json({ error: "Credenciais inválidas" }, { status: 401 });
   }
 
   const valid = await verifyPassword(password, admin.password);
   if (!valid) {
-    return NextResponse.json({ error: "Credenciais inv\u00E1lidas" }, { status: 401 });
+    return NextResponse.json({ error: "Credenciais inválidas" }, { status: 401 });
   }
 
   const token = signToken({ id: admin.id, email: admin.email });
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    maxAge: 60 * 60 * 24 * 7,
     path: "/",
   });
 

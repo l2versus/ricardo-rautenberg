@@ -17,7 +17,7 @@ interface Props {
 
 export const metadata = {
   title: "Im\u00F3veis de Alto Padr\u00E3o",
-  description: "Explore nossa sele\u00E7\u00E3o exclusiva de im\u00F3veis de luxo nos melhores bairros de S\u00E3o Paulo. Coberturas, apartamentos e casas de alto padr\u00E3o.",
+  description: "Explore nossa seleção exclusiva de imóveis de luxo no ABC Paulista. Coberturas, apartamentos e casas de alto padrão em Santo André, São Bernardo e São Caetano.",
 };
 
 async function getProperties(params: {
@@ -60,7 +60,7 @@ export default async function ImoveisPage({ searchParams }: Props) {
   const { properties, total, totalPages, page } = await getProperties(params);
 
   return (
-    <div className="py-12 px-4">
+    <div className="pt-28 sm:pt-36 pb-20 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-12">

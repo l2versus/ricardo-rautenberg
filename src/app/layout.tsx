@@ -18,17 +18,17 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Ricardo Rautenberg | Im\u00F3veis de Alto Padr\u00E3o em S\u00E3o Paulo",
+    default: "Ricardo Rautenberg | Imóveis de Alto Padrão no ABC Paulista",
     template: "%s | Ricardo Rautenberg",
   },
   description:
-    "Corretor especializado em im\u00F3veis de alto padr\u00E3o nos melhores bairros de S\u00E3o Paulo. Coberturas, apartamentos e casas de luxo no Itaim Bibi, Jardins, Vila Nova Concei\u00E7\u00E3o e regi\u00E3o. CRECI SP 299919.",
+    "Corretor especializado em imóveis de alto padrão no ABC Paulista. Coberturas, apartamentos e casas de luxo em Santo André, São Bernardo, São Caetano e região. CRECI SP 299919.",
   keywords: [
-    "im\u00F3veis de luxo S\u00E3o Paulo",
-    "corretor alto padr\u00E3o SP",
-    "cobertura Itaim Bibi",
-    "apartamento Jardins",
-    "im\u00F3vel luxo Vila Nova Concei\u00E7\u00E3o",
+    "imóveis de luxo ABC Paulista",
+    "corretor alto padrão ABC",
+    "apartamento Santo André",
+    "cobertura São Bernardo",
+    "imóvel luxo São Caetano",
     "Ricardo Rautenberg",
     "CRECI 299919",
   ],
@@ -38,10 +38,10 @@ export const metadata: Metadata = {
     type: "website",
     locale: "pt_BR",
     url: "https://ricardorautenberg.com.br",
-    siteName: "Ricardo Rautenberg Im\u00F3veis",
-    title: "Ricardo Rautenberg | Im\u00F3veis de Alto Padr\u00E3o em S\u00E3o Paulo",
+    siteName: "Ricardo Rautenberg Imóveis",
+    title: "Ricardo Rautenberg | Imóveis de Alto Padrão no ABC Paulista",
     description:
-      "Corretor especializado em im\u00F3veis de alto padr\u00E3o. Coberturas, apartamentos e casas de luxo nos melhores bairros de SP.",
+      "Broker. Transformando sonhos em realidade. Corretor especializado em imóveis de alto padrão no ABC Paulista.",
   },
   robots: {
     index: true,
