@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
-import { prisma } from "@/lib/prisma";
 import { NEIGHBORHOODS } from "@/lib/utils";
+
+export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ricardorautenberg.com.br";
@@ -22,17 +23,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // Property pages (only public ones)
-  const properties = await prisma.property.findMany({
-    where: { isOffMarket: false },
-    select: { slug: true, updatedAt: true },
-  });
+  let propertyPages: MetadataRoute.Sitemap = [];
+  try {
+    const { prisma } = await import("@/lib/prisma");
+    const properties = await prisma.property.findMany({
+      where: { isOffMarket: false },
+      select: { slug: true, updatedAt: true },
+    });
 
-  const propertyPages: MetadataRoute.Sitemap = properties.map((p) => ({
-    url: `${baseUrl}/imoveis/${p.slug}`,
-    lastModified: p.updatedAt,
-    changeFrequency: "weekly" as const,
-    priority: 0.8,
-  }));
+    propertyPages = properties.map((p) => ({
+      url: `${baseUrl}/imoveis/${p.slug}`,
+      lastModified: p.updatedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    }));
+  } catch {
+    // DB not available during build
+  }
 
   return [...staticPages, ...neighborhoodPages, ...propertyPages];
 }
