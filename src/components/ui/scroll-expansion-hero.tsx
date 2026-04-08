@@ -207,7 +207,7 @@ const ScrollExpandMedia = ({
               alt='Background'
               width={1920}
               height={1080}
-              className='w-screen h-screen'
+              className='w-full h-screen'
               style={{
                 objectFit: 'cover',
                 objectPosition: 'center',

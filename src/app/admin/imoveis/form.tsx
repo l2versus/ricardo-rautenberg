@@ -385,7 +385,7 @@ export function PropertyForm({ initialData }: PropertyFormProps) {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
             {images.map((img, i) => (
               <div key={i} className="relative aspect-[4/3] overflow-hidden group border border-border/30">
-                <Image src={img.url} alt={img.alt || ""} fill className="object-cover" sizes="200px" />
+                <Image src={img.url} alt={img.alt || ""} fill unoptimized className="object-cover" sizes="200px" />
                 <button
                   type="button"
                   onClick={() => removeImage(i)}

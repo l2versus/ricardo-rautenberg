@@ -103,7 +103,7 @@ export default function InteractiveSelector({
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center py-12 sm:py-24 font-body text-white overflow-hidden max-w-[100vw]">
+    <div className="relative flex flex-col items-center justify-center pt-24 pb-12 sm:py-24 font-body text-white overflow-hidden max-w-full">
       {/* Header */}
       <div className="w-full max-w-2xl px-6 mb-2 text-center">
         <p className="text-gold/70 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-body">

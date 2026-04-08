@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
+import { PreventZoom } from "@/components/prevent-zoom";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -77,6 +78,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className="min-h-screen bg-background text-foreground antialiased overflow-x-hidden">
+        <PreventZoom />
         {children}
       </body>
     </html>

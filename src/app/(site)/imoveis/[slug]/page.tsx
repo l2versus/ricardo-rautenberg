@@ -18,7 +18,15 @@ import {
   Building2,
   Layers,
   CheckCircle2,
+  Play,
 } from "lucide-react";
+
+function getYouTubeId(url: string): string | null {
+  const match = url.match(
+    /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/
+  );
+  return match?.[1] ?? null;
+}
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -168,6 +176,28 @@ export default async function PropertyPage({ params }: Props) {
                 </div>
                 <div className="text-muted-foreground/70 leading-relaxed whitespace-pre-line font-body text-[15px]">
                   {property.description}
+                </div>
+              </div>
+            )}
+
+            {/* Video */}
+            {property.videoUrl && getYouTubeId(property.videoUrl) && (
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-1 h-5 bg-gold/60" />
+                  <h2 className="text-lg font-semibold font-display tracking-wider uppercase">
+                    <Play className="w-4 h-4 inline mr-1.5 -mt-0.5" />
+                    Vídeo
+                  </h2>
+                </div>
+                <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-border/30">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${getYouTubeId(property.videoUrl)}`}
+                    title={`Vídeo - ${property.title}`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="absolute inset-0 w-full h-full"
+                  />
                 </div>
               </div>
             )}

@@ -47,6 +47,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
             src={mainImage.url}
             alt={mainImage.alt || property.title}
             fill
+            unoptimized
             className="object-cover transition-transform duration-[1s] ease-out group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />

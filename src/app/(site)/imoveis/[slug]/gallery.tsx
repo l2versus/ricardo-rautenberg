@@ -33,6 +33,7 @@ export function PropertyGallery({ images, title }: GalleryProps) {
             src={images[0].url}
             alt={images[0].alt || title}
             fill
+            unoptimized
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"
             priority
@@ -50,6 +51,7 @@ export function PropertyGallery({ images, title }: GalleryProps) {
               src={img.url}
               alt={img.alt || `${title} - Foto ${i + 2}`}
               fill
+              unoptimized
               className="object-cover"
               sizes="25vw"
             />
@@ -111,6 +113,7 @@ export function PropertyGallery({ images, title }: GalleryProps) {
               src={images[lightboxIndex].url}
               alt={images[lightboxIndex].alt || `${title} - Foto ${lightboxIndex + 1}`}
               fill
+              unoptimized
               className="object-contain"
               sizes="100vw"
             />
