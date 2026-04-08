@@ -42,7 +42,7 @@ export default function ContatoPage() {
             <p className="text-[13px] text-muted-foreground/60 font-body mb-3">
               Resposta rápida e direta
             </p>
-            <p className="text-sm text-gold font-body">(11) 99999-9999</p>
+            <p className="text-sm text-gold font-body">(11) 93911-7173</p>
           </a>
 
           {/* Phone */}
@@ -57,7 +57,7 @@ export default function ContatoPage() {
             <p className="text-[13px] text-muted-foreground/60 font-body mb-3">
               Ligue diretamente
             </p>
-            <p className="text-sm text-gold font-body">(11) 99999-9999</p>
+            <p className="text-sm text-gold font-body">(11) 93911-7173</p>
           </a>
 
           {/* Email */}
