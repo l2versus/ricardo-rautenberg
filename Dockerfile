@@ -12,6 +12,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Fake DATABASE_URL for build (not used at runtime)
+ENV DATABASE_URL="postgresql://fake:fake@localhost:5432/fake"
+
 # Generate Prisma client
 RUN npx prisma generate
 
