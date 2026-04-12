@@ -30,15 +30,21 @@ const SHOWCASE_IMAGES = [
 ];
 
 async function getFeaturedProperties() {
-  // 🚀 MODO DEV LOCAL: Prisma desligado por enquanto
-  // return prisma.property.findMany({...})
-  return [];
+  return prisma.property.findMany({
+    where: { isFeatured: true, isOffMarket: false },
+    include: { images: { orderBy: { order: "asc" }, take: 1 } },
+    orderBy: { createdAt: "desc" },
+    take: 6,
+  });
 }
 
 async function getRecentProperties() {
-  // 🚀 MODO DEV LOCAL: Prisma desligado por enquanto
-  // return prisma.property.findMany({...})
-  return [];
+  return prisma.property.findMany({
+    where: { isOffMarket: false },
+    include: { images: { orderBy: { order: "asc" }, take: 1 } },
+    orderBy: { createdAt: "desc" },
+    take: 6,
+  });
 }
 
 export default async function HomePage() {
