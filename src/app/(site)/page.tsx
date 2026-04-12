@@ -101,7 +101,6 @@ export default async function HomePage() {
       {/* ═══════ SHOWCASE — IMMERSIVE TOUR CTA ═══════ */}
       <section className="relative py-20 sm:py-32 px-4 sm:px-6 overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          {/* Section header with parallax */}
           <div className="flex items-end justify-between mb-10 sm:mb-14">
             <FadeUp>
               <p className="text-gold/70 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-2 font-body">
@@ -118,7 +117,6 @@ export default async function HomePage() {
             </FadeIn>
           </div>
 
-          {/* Tour hero card with parallax */}
           <ScaleUp>
             <Link href="/tour" className="group block relative overflow-hidden mb-6">
               <ParallaxImage speed={0.2} className="relative aspect-[21/9] sm:aspect-[3/1]">
@@ -140,7 +138,6 @@ export default async function HomePage() {
             </Link>
           </ScaleUp>
 
-          {/* Photo grid with stagger */}
           <StaggerContainer className="grid grid-cols-2 sm:grid-cols-4 gap-[3px]">
             {SHOWCASE_IMAGES.slice(0, 4).map((img, i) => (
               <StaggerItem key={i}>
@@ -163,7 +160,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ═══════ DIVIDER ═══════ */}
       <LineReveal className="mx-auto max-w-xs" />
 
       {/* ═══════ LISTINGS ═══════ */}
@@ -202,7 +198,6 @@ export default async function HomePage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
-            {/* Photo with parallax */}
             <SlideIn direction="left" className="lg:col-span-5 relative">
               <ParallaxImage speed={0.15} className="relative aspect-[3/4] max-w-sm mx-auto lg:mx-0">
                 <Image src="/images/ricardo-dark.jpg" alt="Ricardo Rautenberg" fill className="object-cover object-top" sizes="(max-width: 1024px) 80vw, 40vw" />
@@ -214,7 +209,6 @@ export default async function HomePage() {
               </FadeUp>
             </SlideIn>
 
-            {/* Text with reveals */}
             <SlideIn direction="right" className="lg:col-span-7 lg:pl-4">
               <FadeUp>
                 <p className="text-gold/70 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-body">
@@ -242,7 +236,6 @@ export default async function HomePage() {
                 </div>
               </FadeUp>
 
-              {/* Stats */}
               <FadeUp delay={0.3}>
                 <div className="flex items-center gap-10 mt-10">
                   {[
@@ -304,12 +297,11 @@ export default async function HomePage() {
                 </StaggerItem>
               ))}
             </div>
-            {/* Gradient fade on right side for mobile */}
             <div className="absolute top-0 right-0 bottom-0 w-12 bg-gradient-to-l from-background to-transparent pointer-events-none" />
           </div>
 
           {/* Desktop: flex-wrap centered grid */}
-          <div className="hidden sm:flex sm:flex-wrap sm:justify-center gap-3 px-6">
+          <div className="hidden sm:flex sm:flex-wrap sm:justify-center gap-x-4 gap-y-4 px-8 max-w-5xl mx-auto">
             {NEIGHBORHOODS.slice(0, 14).map((neighborhood) => (
               <StaggerItem key={neighborhood}>
                 <Link
