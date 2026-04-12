@@ -289,12 +289,32 @@ export default async function HomePage() {
         </div>
 
         <StaggerContainer className="relative" staggerDelay={0.05}>
-          <div className="flex gap-3 overflow-x-auto scroll-snap-x pb-4 px-4 sm:px-6 sm:flex-wrap sm:justify-center sm:overflow-visible">
+          {/* Mobile: horizontal scroll with snapping */}
+          <div className="sm:hidden overflow-x-auto scroll-smooth pb-4 -mx-4 px-4">
+            <div className="flex gap-3 min-w-max">
+              {NEIGHBORHOODS.slice(0, 14).map((neighborhood) => (
+                <StaggerItem key={neighborhood}>
+                  <Link
+                    href={`/imoveis?bairro=${encodeURIComponent(neighborhood)}`}
+                    className="flex-shrink-0 px-6 py-3 bg-card/80 border border-border/60 rounded-none text-sm text-muted-foreground hover:text-gold hover:border-gold/30 transition-all duration-400 font-body group whitespace-nowrap"
+                  >
+                    <MapPin className="w-3 h-3 inline mr-2 text-gold/40 group-hover:text-gold transition-colors" />
+                    {neighborhood}
+                  </Link>
+                </StaggerItem>
+              ))}
+            </div>
+            {/* Gradient fade on right side for mobile */}
+            <div className="absolute top-0 right-0 bottom-0 w-12 bg-gradient-to-l from-background to-transparent pointer-events-none" />
+          </div>
+
+          {/* Desktop: flex-wrap centered grid */}
+          <div className="hidden sm:flex sm:flex-wrap sm:justify-center gap-3 px-6">
             {NEIGHBORHOODS.slice(0, 14).map((neighborhood) => (
               <StaggerItem key={neighborhood}>
                 <Link
                   href={`/imoveis?bairro=${encodeURIComponent(neighborhood)}`}
-                  className="flex-shrink-0 px-6 py-3 bg-card/80 border border-border/60 rounded-none text-sm text-muted-foreground hover:text-gold hover:border-gold/30 transition-all duration-400 font-body group"
+                  className="px-6 py-3 bg-card/80 border border-border/60 rounded-none text-sm text-muted-foreground hover:text-gold hover:border-gold/30 transition-all duration-400 font-body group"
                 >
                   <MapPin className="w-3 h-3 inline mr-2 text-gold/40 group-hover:text-gold transition-colors" />
                   {neighborhood}
@@ -302,7 +322,6 @@ export default async function HomePage() {
               </StaggerItem>
             ))}
           </div>
-          <div className="absolute top-0 right-0 bottom-0 w-12 bg-gradient-to-l from-background to-transparent pointer-events-none sm:hidden" />
         </StaggerContainer>
       </ParallaxSection>
 
