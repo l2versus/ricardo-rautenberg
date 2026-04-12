@@ -29,8 +29,6 @@ async function getProperties(params: {
   quartos?: string;
   page?: string;
 }) {
-  // 🚀 MODO DEV LOCAL: Prisma desligado por enquanto
-  /*
   const where: Record<string, unknown> = {
     isOffMarket: false,
   };
@@ -57,9 +55,6 @@ async function getProperties(params: {
   ]);
 
   return { properties, total, totalPages: Math.ceil(total / perPage), page };
-  */
-
-  return { properties: [], total: 0, totalPages: 0, page: 1 };
 }
 
 export default async function ImoveisPage({ searchParams }: Props) {
