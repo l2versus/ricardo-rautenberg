@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { readFile, stat } from "fs/promises";
 import path from "path";
-import { fileURLToPath } from "url";
 
 const MIME_TYPES: Record<string, string> = {
   jpg: "image/jpeg",
@@ -11,19 +10,11 @@ const MIME_TYPES: Record<string, string> = {
   avif: "image/avif",
 };
 
-// Resolver caminho absoluto independente de where node está rodando
 function getUploadsDir(): string {
-  // Tenta múltiplos paths em ordem de preferência
-  const possiblePaths = [
-    // Produção: Vercel/Coolify com public acessível
-    path.join(process.cwd(), "public", "uploads"),
-    // Produção: .next/standalone
-    path.join(process.cwd(), "..", "public", "uploads"),
-    // Fallback: procura a partir do diretório de assets
-    path.join(process.cwd(), "dist", "public", "uploads"),
-  ];
-
-  return possiblePaths[0]; // Primário, com error handling abaixo
+  if (process.env.UPLOADS_DIR) {
+    return process.env.UPLOADS_DIR;
+  }
+  return path.join(process.cwd(), "public", "uploads");
 }
 
 export async function GET(
@@ -42,7 +33,11 @@ export async function GET(
   const uploadsDir = getUploadsDir();
   const filePath = path.join(uploadsDir, safeName);
 
-  // Segurança: garantir que o caminho está dentro de uploads/
+  // DEBUG TEMPORÁRIO
+  console.log(`[Uploads] UPLOADS_DIR env: ${process.env.UPLOADS_DIR}`);
+  console.log(`[Uploads] Resolvido: ${uploadsDir}`);
+  console.log(`[Uploads] Caminho final: ${filePath}`);
+
   if (!filePath.startsWith(path.resolve(uploadsDir))) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
