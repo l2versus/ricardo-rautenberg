@@ -1,60 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
-import { readFile, stat } from "fs/promises";
-import path from "path";
+import { getSession } from "@/lib/auth";
+import { uploadFile } from "@/lib/storage";
 
-const MIME_TYPES: Record<string, string> = {
-  jpg: "image/jpeg",
-  jpeg: "image/jpeg",
-  png: "image/png",
-  webp: "image/webp",
-  avif: "image/avif",
-};
-
-function getUploadsDir(): string {
-  if (process.env.UPLOADS_DIR) {
-    return process.env.UPLOADS_DIR;
-  }
-  return path.join(process.cwd(), "public", "uploads");
-}
-
-export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ name: string }> }
-) {
-  const { name } = await params;
-
-  const ext = name.split(".").pop()?.toLowerCase() || "";
-  const contentType = MIME_TYPES[ext];
-  if (!contentType) {
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
-  }
-
-  const safeName = path.basename(name);
-  const uploadsDir = getUploadsDir();
-  const filePath = path.join(uploadsDir, safeName);
-
-  // DEBUG TEMPORÁRIO — remove após confirmar o caminho
-  console.log(`[Uploads] UPLOADS_DIR env: ${process.env.UPLOADS_DIR}`);
-  console.log(`[Uploads] Resolvido: ${uploadsDir}`);
-  console.log(`[Uploads] Caminho final: ${filePath}`);
-
-  if (!filePath.startsWith(path.resolve(uploadsDir))) {
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
+export async function POST(req: NextRequest) {
+  const session = await getSession();
+  if (!session) {
+    return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
   }
 
   try {
-    const fileStat = await stat(filePath);
-    const file = await readFile(filePath);
+    const formData = await req.formData();
+    const files = formData.getAll("files") as File[];
 
-    return new Response(file, {
-      headers: {
-        "Content-Type": contentType,
-        "Content-Length": String(fileStat.size),
-        "Cache-Control": "public, max-age=31536000, immutable",
-      },
-    });
+    if (!files.length) {
+      return NextResponse.json({ error: "Nenhum arquivo enviado" }, { status: 400 });
+    }
+
+    const results = [];
+
+    for (const file of files) {
+      const uploadResult = await uploadFile(file);
+      results.push(uploadResult);
+    }
+
+    const urls = results.map((r) => r.url);
+    return NextResponse.json({ urls }, { status: 200 });
   } catch (error) {
-    console.error(`[Uploads] Arquivo não encontrado: ${filePath}`, error);
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
+    const message = error instanceof Error ? error.message : "Erro ao fazer upload";
+    console.error("[API Upload] Erro:", message, error);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
