@@ -12,13 +12,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Fake DATABASE_URL for build (not used at runtime)
 ENV DATABASE_URL="postgresql://fake:fake@localhost:5432/fake"
 
-# Generate Prisma client
 RUN npx prisma generate
-
-# Build Next.js
 RUN npm run build
 
 # --- Runner ---
@@ -31,22 +27,18 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# 1. Copy standalone build FIRST
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-
-# 2. Copy static files
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-# 3. Copy ALL public assets AFTER standalone (overwrites any partial public from standalone)
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
-# 4. Copy Prisma files
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 COPY --from=builder /app/src/generated ./src/generated
 
-# Create uploads directory
 RUN mkdir -p /app/public/uploads && chown -R nextjs:nodejs /app/public/uploads
+
+# Volume de uploads - garante permissão pro nextjs
+RUN mkdir -p /data/uploads && chown -R nextjs:nodejs /data/uploads
 
 USER nextjs
 
