@@ -33,11 +33,6 @@ export async function GET(
   const uploadsDir = getUploadsDir();
   const filePath = path.join(uploadsDir, safeName);
 
-  // DEBUG TEMPORÁRIO
-  console.log(`[Uploads] UPLOADS_DIR env: ${process.env.UPLOADS_DIR}`);
-  console.log(`[Uploads] Resolvido: ${uploadsDir}`);
-  console.log(`[Uploads] Caminho final: ${filePath}`);
-
   if (!filePath.startsWith(path.resolve(uploadsDir))) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
