@@ -36,14 +36,15 @@ COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 COPY --from=builder /app/src/generated ./src/generated
 
 RUN mkdir -p /app/public/uploads && chown -R nextjs:nodejs /app/public/uploads
-
-# Volume de uploads - garante permissão pro nextjs
 RUN mkdir -p /data/uploads && chown -R nextjs:nodejs /data/uploads
 
-USER nextjs
+RUN apk add --no-cache su-exec
+
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
 EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["node", "server.js"]
+CMD ["/app/entrypoint.sh"]
