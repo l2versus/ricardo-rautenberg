@@ -168,18 +168,41 @@ const ScrollExpandMedia = ({
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
 
-  // Force autoplay on mobile
   useEffect(() => {
     const video = videoRef.current;
     if (!video || mediaType !== 'video') return;
 
     video.muted = true;
-    const tryPlay = () => { video.play().catch(() => {}); };
-    tryPlay();
-    video.addEventListener('loadeddata', tryPlay);
-    document.addEventListener('visibilitychange', () => { if (!document.hidden) tryPlay(); });
+    video.volume = 0;
 
-    return () => { video.removeEventListener('loadeddata', tryPlay); };
+    const tryPlay = () => { video.play().catch(() => {}); };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) tryPlay();
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(video);
+    video.addEventListener('loadedmetadata', tryPlay);
+    video.addEventListener('loadeddata', tryPlay);
+    video.addEventListener('canplay', tryPlay);
+
+    const onVisibility = () => { if (!document.hidden) tryPlay(); };
+    document.addEventListener('visibilitychange', onVisibility);
+
+    tryPlay();
+
+    return () => {
+      observer.disconnect();
+      video.removeEventListener('loadedmetadata', tryPlay);
+      video.removeEventListener('loadeddata', tryPlay);
+      video.removeEventListener('canplay', tryPlay);
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
   }, [mediaType]);
 
   const mediaWidth = 300 + scrollProgress * (isMobileState ? 650 : 1250);
@@ -244,6 +267,7 @@ const ScrollExpandMedia = ({
                       controls={false}
                       disablePictureInPicture
                       disableRemotePlayback
+                      style={{ WebkitPlaysinline: true } as React.CSSProperties}
                     />
                     <div
                       className='absolute inset-0 z-10'
