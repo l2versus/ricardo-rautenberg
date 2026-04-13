@@ -24,25 +24,34 @@ export function AutoplayVideo({ src, poster, className }: AutoplayVideoProps) {
     if (!video) return;
 
     video.muted = true;
+    video.volume = 0;
 
     const tryPlay = () => {
-      video.play().catch(() => {
-        // Some browsers need user interaction, poster will show as fallback
-      });
+      video.play().catch(() => {});
     };
 
-    // Try immediately
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            tryPlay();
+          } else {
+            video.pause();
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(video);
+    video.addEventListener("loadedmetadata", tryPlay);
+    video.addEventListener("canplay", tryPlay);
     tryPlay();
 
-    // Also try when video data is loaded
-    video.addEventListener("loadeddata", tryPlay);
-    // Try on visibility change (tab becomes active)
-    document.addEventListener("visibilitychange", () => {
-      if (!document.hidden) tryPlay();
-    });
-
     return () => {
-      video.removeEventListener("loadeddata", tryPlay);
+      observer.disconnect();
+      video.removeEventListener("loadedmetadata", tryPlay);
+      video.removeEventListener("canplay", tryPlay);
     };
   }, []);
 
@@ -56,6 +65,7 @@ export function AutoplayVideo({ src, poster, className }: AutoplayVideoProps) {
       poster={poster}
       preload="auto"
       className={className}
+      style={{ WebkitPlaysinline: true } as React.CSSProperties}
     >
       <source src={resolveVideoSrc(src)} type="video/mp4" />
     </video>
