@@ -27,8 +27,20 @@ export function AutoplayVideo({ src, poster, className }: AutoplayVideoProps) {
     video.volume = 0;
 
     const tryPlay = () => {
-      video.play().catch(() => {});
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {});
+      }
     };
+
+    const handleUserInteraction = () => {
+      tryPlay();
+      window.removeEventListener("touchstart", handleUserInteraction);
+      window.removeEventListener("mousedown", handleUserInteraction);
+    };
+
+    window.addEventListener("touchstart", handleUserInteraction, { passive: true });
+    window.addEventListener("mousedown", handleUserInteraction, { passive: true });
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -50,6 +62,8 @@ export function AutoplayVideo({ src, poster, className }: AutoplayVideoProps) {
 
     return () => {
       observer.disconnect();
+      window.removeEventListener("touchstart", handleUserInteraction);
+      window.removeEventListener("mousedown", handleUserInteraction);
       video.removeEventListener("loadedmetadata", tryPlay);
       video.removeEventListener("canplay", tryPlay);
     };
@@ -58,6 +72,7 @@ export function AutoplayVideo({ src, poster, className }: AutoplayVideoProps) {
   return (
     <video
       ref={videoRef}
+      src={resolveVideoSrc(src)}
       autoPlay
       muted
       loop
@@ -66,8 +81,9 @@ export function AutoplayVideo({ src, poster, className }: AutoplayVideoProps) {
       preload="auto"
       className={className}
       style={{ WebkitPlaysinline: true } as React.CSSProperties}
-    >
-      <source src={resolveVideoSrc(src)} type="video/mp4" />
-    </video>
+      controls={false}
+      disablePictureInPicture
+      disableRemotePlayback
+    />
   );
 }

@@ -172,10 +172,29 @@ const ScrollExpandMedia = ({
     const video = videoRef.current;
     if (!video || mediaType !== 'video') return;
 
+    // Configurações iniciais de segurança para autoplay
     video.muted = true;
     video.volume = 0;
 
-    const tryPlay = () => { video.play().catch(() => {}); };
+    const tryPlay = () => {
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Falha silenciosa se o autoplay for bloqueado
+        });
+      }
+    };
+
+    // Tentar dar play em interações do usuário (desbloqueia mobile)
+    const handleUserInteraction = () => {
+      tryPlay();
+      // Remove os listeners após a primeira interação bem-sucedida ou tentativa
+      window.removeEventListener('touchstart', handleUserInteraction);
+      window.removeEventListener('mousedown', handleUserInteraction);
+    };
+
+    window.addEventListener('touchstart', handleUserInteraction, { passive: true });
+    window.addEventListener('mousedown', handleUserInteraction, { passive: true });
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -194,10 +213,13 @@ const ScrollExpandMedia = ({
     const onVisibility = () => { if (!document.hidden) tryPlay(); };
     document.addEventListener('visibilitychange', onVisibility);
 
+    // Tenta dar play imediatamente
     tryPlay();
 
     return () => {
       observer.disconnect();
+      window.removeEventListener('touchstart', handleUserInteraction);
+      window.removeEventListener('mousedown', handleUserInteraction);
       video.removeEventListener('loadedmetadata', tryPlay);
       video.removeEventListener('loadeddata', tryPlay);
       video.removeEventListener('canplay', tryPlay);
