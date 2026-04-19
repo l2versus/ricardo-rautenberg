@@ -16,7 +16,7 @@ export default function TourPage() {
     <div className="min-h-screen bg-background overflow-x-hidden">
       <ScrollExpandMedia
         mediaType="video"
-        mediaSrc="/images/tour-video.mp4"
+        mediaSrc="/media/tour-video.mp4"
         posterSrc="/images/cap3.jpg"
         bgImageSrc="/images/ricardo-dark.jpg"
         title="Imóveis de Alto Padrão"

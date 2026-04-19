@@ -36,7 +36,9 @@ COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 COPY --from=builder /app/src/generated ./src/generated
 
 RUN mkdir -p /app/public/uploads && chown -R nextjs:nodejs /app/public/uploads
+RUN mkdir -p /app/public/media && chown -R nextjs:nodejs /app/public/media
 RUN mkdir -p /data/uploads && chown -R nextjs:nodejs /data/uploads
+RUN mkdir -p /data/media && chown -R nextjs:nodejs /data/media
 
 RUN apk add --no-cache su-exec
 
