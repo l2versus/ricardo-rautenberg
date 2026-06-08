@@ -24,8 +24,12 @@ interface ScrollExpandMediaProps {
 }
 
 function resolveVideoSrc(src: string): string {
-  if (src.startsWith("/images/") && src.endsWith(".mp4")) {
-    return `/api/video/${src.replace("/images/", "")}`;
+  // Serve vídeos de /images (embutidos na imagem) e /media (volume persistente)
+  // pela rota de API com suporte a HTTP Range (206) — exigido pelo iOS/Safari
+  // mobile para reproduzir <video>. Arquivos estáticos sem Range não tocam no
+  // iPhone (mas funcionam no desktop e na emulação mobile do navegador).
+  if ((src.startsWith("/images/") || src.startsWith("/media/")) && src.endsWith(".mp4")) {
+    return `/api/video/${src.replace(/^\/(images|media)\//, "")}`;
   }
   return src;
 }
